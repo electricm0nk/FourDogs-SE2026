@@ -22,6 +22,8 @@ const state = window._state = {
   order: {}, // key "page|widget" -> qty string
   vendorMeta: {}, // vendorName -> { notes }
   buyer: { storeName: "", city: "", rep: "", email: "", phone: "" },
+  filesHandle: null, // FileSystemFileHandle for iPad Safari auto-save
+  filesHandleName: null,
 };
 
 // === DOM helpers ===
@@ -86,9 +88,124 @@ function persist() {
     });
     localStorage.setItem(STORE_KEY, payload);
     setSaveState("Saved ✓ " + new Date().toLocaleTimeString(), "ok");
+    // If we have a Files handle, also write silently to iPad Files / iCloud Drive
+    if (state.filesHandle) {
+      writeToFilesHandle(payload).catch((e) => {
+        console.warn("Files auto-save failed:", e);
+      });
+    }
   } catch (e) {
     console.warn("persist failed", e);
     setSaveState("Save failed — backup now!", "warn");
+  }
+}
+
+// === Files app integration (iPad Safari) ===
+function filesApiSupported() {
+  return typeof window.showSaveFilePicker === "function" ||
+         typeof window.showOpenFilePicker === "function";
+}
+
+async function saveToFiles() {
+  if (!filesApiSupported()) {
+    showModal(
+      "<h3>Files app not supported</h3>" +
+      "<p>Your browser doesn't support saving directly to the Files app. Use <strong>Backup JSON</strong> instead and drop the file into Files / iCloud Drive manually.</p>" +
+      '<div class="modal-actions"><button id="cm-ok">OK</button></div>'
+    );
+    document.getElementById("cm-ok").onclick = hideModal;
+    return;
+  }
+  try {
+    const payload = JSON.stringify({
+      version: SCHEMA_VERSION,
+      order: state.order,
+      vendorMeta: state.vendorMeta,
+      buyer: state.buyer,
+      savedAt: new Date().toISOString(),
+    }, null, 2);
+    const handle = await window.showSaveFilePicker({
+      suggestedName: state.filesHandleName || "sepet2026-order.json",
+      types: [{ description: "Order JSON", accept: { "application/json": [".json"] } }],
+    });
+    const writable = await handle.createWritable();
+    await writable.write(payload);
+    await writable.close();
+    state.filesHandle = handle;
+    state.filesHandleName = handle.name || "sepet2026-order.json";
+    setSaveState("Saved ✓ to " + state.filesHandleName, "ok");
+    toast("Saved to Files: " + state.filesHandleName, 2500);
+  } catch (e) {
+    if (e && e.name === "AbortError") return; // user cancelled
+    console.warn("saveToFiles failed", e);
+    showModal(
+      "<h3>Save to Files failed</h3>" +
+      "<p>" + escapeHtml(e.message || String(e)) + "</p>" +
+      "<p>Try again, or use Backup JSON as a fallback.</p>" +
+      '<div class="modal-actions"><button id="cm-ok">OK</button></div>'
+    );
+    document.getElementById("cm-ok").onclick = hideModal;
+  }
+}
+
+async function writeToFilesHandle(payload) {
+  if (!state.filesHandle) return;
+  try {
+    // verify permission (may have been revoked)
+    if (state.filesHandle.queryPermission) {
+      const perm = await state.filesHandle.queryPermission({ mode: "readwrite" });
+      if (perm !== "granted") {
+        const req = await state.filesHandle.requestPermission({ mode: "readwrite" });
+        if (req !== "granted") {
+          setSaveState("Files permission needed — tap Save to Files", "warn");
+          return;
+        }
+      }
+    }
+    const writable = await state.filesHandle.createWritable();
+    await writable.write(payload);
+    await writable.close();
+  } catch (e) {
+    console.warn("writeToFilesHandle failed:", e);
+    throw e;
+  }
+}
+
+async function restoreFromFiles() {
+  if (!filesApiSupported()) {
+    showModal(
+      "<h3>Files picker not supported</h3>" +
+      "<p>Use the regular Restore JSON button and pick from Files.</p>" +
+      '<div class="modal-actions"><button id="cm-ok">OK</button></div>'
+    );
+    document.getElementById("cm-ok").onclick = hideModal;
+    return;
+  }
+  try {
+    const [handle] = await window.showOpenFilePicker({
+      types: [{ description: "Order JSON", accept: { "application/json": [".json"] } }],
+    });
+    const file = await handle.getFile();
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    if (parsed.version !== SCHEMA_VERSION) {
+      toast("Backup version mismatch", 2500);
+      return;
+    }
+    state.order = parsed.order || {};
+    state.vendorMeta = parsed.vendorMeta || {};
+    Object.assign(state.buyer, parsed.buyer || {});
+    persist();
+    $("#main").innerHTML = "";
+    renderBuyerHeader();
+    renderToolbarIntoMain();
+    renderVendorView(state.currentVendor);
+    updateVendorNavIndicators();
+    toast("Restored from " + file.name);
+  } catch (e) {
+    if (e && e.name === "AbortError") return;
+    console.warn("restoreFromFiles failed", e);
+    toast("Restore failed", 2500);
   }
 }
 
@@ -230,6 +347,7 @@ function renderToolbarIntoMain() {
   div.className = "toolbar";
   div.innerHTML =
     '<button id="btnSubmit">Submit & Export</button>' +
+    '<button class="secondary" id="btnSaveFiles">Save to Files</button>' +
     '<button class="secondary" id="btnBackup">Backup JSON</button>' +
     '<button class="secondary" id="btnRestore">Restore JSON</button>' +
     '<button class="secondary" id="btnClear">Clear Vendor</button>' +
@@ -240,6 +358,7 @@ function renderToolbarIntoMain() {
     '</div>';
   m.insertBefore(div, m.children[1]); // after buyer-header
   div.querySelector("#btnSubmit").addEventListener("click", submitOrder);
+  div.querySelector("#btnSaveFiles").addEventListener("click", saveToFiles);
   div.querySelector("#btnBackup").addEventListener("click", backupJson);
   div.querySelector("#btnRestore").addEventListener("click", restoreJson);
   div.querySelector("#btnClear").addEventListener("click", clearCurrentVendor);

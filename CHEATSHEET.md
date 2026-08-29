@@ -6,8 +6,9 @@
 
 1. Open Safari, go to the order builder URL (get from Todd).
 2. Wait for "Ready ✓" in the top-right corner (PDF + data loaded, ~30 sec first time).
-3. Tap the **Share** button → **Add to Home Screen**. Now it's an app icon.
-4. Close and reopen a few times to make sure offline mode kicks in.
+3. Tap **Save to Files** button once. iOS will ask where to save — pick **iCloud Drive** (or any folder you'll find later). The app remembers this location.
+4. From now on, every change auto-saves to that file silently. The save indicator shows "Saved ✓ to filename.json".
+5. Tap the **Share** button → **Add to Home Screen**. Now it's an app icon.
 
 ## Filling an order
 
@@ -15,7 +16,7 @@
 - Scroll to see all of that vendor's deals.
 - Tap any yellow box, type a quantity. Subtotal updates instantly.
 - Top of page: enter your **Store name**, **City**, **Rep name**. Saves automatically.
-- "Saved ✓ 11:30 AM" in the top-right means your work is safe.
+- "Saved ✓ to filename.json" in the top-right means your work is safe — both locally AND in iCloud.
 
 ## Submitting
 
@@ -27,21 +28,27 @@
    - `sepet2026-order-….csv` — spreadsheet of every line, for your records
 5. Drop the PDF into the SEP submission folder (Drive, email, whatever the booth uses).
 
-## Backups (do this!)
+## Backups
 
-- Hit **Backup JSON** at the end of each vendor. Downloads a small file.
-- Drop these into a Drive folder called `Order Backups`. If anything goes wrong we can restore.
+**The app auto-saves to the file you picked in step 3 above.** You don't need to do anything. The latest order state is always in iCloud Drive under the filename you chose.
+
+If you want to pick a different file or location:
+- Hit **Save to Files** again, choose a new location.
+
+If you need to grab a snapshot to email:
+- Hit **Backup JSON** — downloads to Files app.
 
 ## If something looks weird
 
 | Symptom | Fix |
 |---|---|
-| Top says "Loading data…" forever | Check wifi. If still bad, tap **Restore JSON** and pick your latest backup. |
-| "Saved ✓" turns red "Save failed — backup now!" | Stop typing, hit **Backup JSON** immediately, then refresh the page and **Restore JSON**. |
+| Top says "Loading data…" forever | Check wifi. If still bad, hit **Restore JSON** and pick your backup from Files. |
+| "Saved ✓" turns red "Save failed — backup now!" | Tap **Save to Files** again to re-authorize. Then keep going. |
 | Subtotal wrong | Tap the qty box, clear it (backspace), retype. |
 | Page won't scroll | Two-finger swipe up/down on the page (not the qty inputs). |
-| Subtotal shows $0 after I typed quantities | Refresh page → Restore JSON → pick your backup. |
+| Subtotal shows $0 after I typed quantities | Reload page → tap **Restore JSON** → pick your latest backup from Files. |
 | App icon missing | Open Safari → URL → Share → Add to Home Screen. |
+| "Files permission needed" message | Tap **Save to Files** once to re-grant access. |
 
 ## Emergency contacts
 
