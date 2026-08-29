@@ -432,16 +432,12 @@ async function renderPageBlock(pageData) {
     const pdfPage = await state.pdfjsDoc.getPage(pageData.index);
     const scale = 1.5;
     const viewport = pdfPage.getViewport({ scale });
-    const canvas = document.createElement("canvas");
     canvas.width = viewport.width;
     canvas.height = viewport.height;
-    // Force the wrap to canvas's intrinsic pixel size so overlay coordinates
-    // (computed in viewport pixel space) line up exactly with the rendered
-    // PDF content. Without this, the wrap shrinks to 100% via CSS but the
-    // overlay positions are still in original viewport pixels — they fall off.
-    wrap.style.width = viewport.width + "px";
-    wrap.style.height = viewport.height + "px";
-    wrap.style.maxWidth = "100%";
+    // Maintain aspect ratio via CSS. Overlays use % so they scale with the wrap.
+    canvas.style.width = "100%";
+    canvas.style.height = "auto";
+    wrap.style.aspectRatio = viewport.width + " / " + viewport.height;
     wrap.appendChild(canvas);
     const ctx = canvas.getContext("2d");
     await pdfPage.render({ canvasContext: ctx, viewport }).promise;
@@ -467,15 +463,17 @@ function overlayWidgets(wrap, pageData, viewport) {
     input.className = "qty-overlay";
     input.min = "0";
     input.step = "1";
-    const left = x0 * (viewport.width / pageW);
-    const top = viewport.height - y1;
-    const wPx = (x1 - x0) * (viewport.width / pageW);
-    const hPx = (y1 - y0) * (viewport.height / pageH);
-    input.style.left = left + "px";
-    input.style.top = top + "px";
-    input.style.width = wPx + "px";
-    input.style.height = hPx + "px";
-    input.style.fontSize = Math.max(11, hPx * 0.55) + "px";
+    // Use percentages so overlay stays aligned when the wrap shrinks
+    // to fit its container. PDF coords (0..pageW, 0..pageH with origin
+    // bottom-left) map to % directly.
+    const leftPct = (x0 / pageW) * 100;
+    const topPct = ((pageH - y1) / pageH) * 100;
+    const wPct = ((x1 - x0) / pageW) * 100;
+    const hPct = ((y1 - y0) / pageH) * 100;
+    input.style.left = leftPct + "%";
+    input.style.top = topPct + "%";
+    input.style.width = wPct + "%";
+    input.style.height = hPct + "%";
     input.dataset.page = pageData.index;
     input.dataset.widget = w.name;
     const key = pageData.index + "|" + w.name;
