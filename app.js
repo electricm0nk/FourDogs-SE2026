@@ -435,7 +435,13 @@ async function renderPageBlock(pageData) {
     const canvas = document.createElement("canvas");
     canvas.width = viewport.width;
     canvas.height = viewport.height;
-    canvas.style.aspectRatio = viewport.width + " / " + viewport.height;
+    // Force the wrap to canvas's intrinsic pixel size so overlay coordinates
+    // (computed in viewport pixel space) line up exactly with the rendered
+    // PDF content. Without this, the wrap shrinks to 100% via CSS but the
+    // overlay positions are still in original viewport pixels — they fall off.
+    wrap.style.width = viewport.width + "px";
+    wrap.style.height = viewport.height + "px";
+    wrap.style.maxWidth = "100%";
     wrap.appendChild(canvas);
     const ctx = canvas.getContext("2d");
     await pdfPage.render({ canvasContext: ctx, viewport }).promise;
