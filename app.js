@@ -552,8 +552,6 @@ function recomputeTotals() {
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
   const hdr = $("#headerTotal");
-  if (hdr) hdr.textContent = "TOTAL ORDER: $" + subtotal.toFixed(2);
-  if (!amt) return;
   amt.textContent = "$" + subtotal.toFixed(2);
   const belowMin = subtotal > 0 && subtotal < ORDER_MIN;
   amt.classList.toggle("below-min", belowMin);
@@ -570,9 +568,6 @@ function renderMasterTable() {
     return a.localeCompare(b);
   });
   const subtotals = computeVendorSubtotals();
-  console.log("[renderMasterTable] order size:", Object.keys(state.order).length, "subtotals:", JSON.stringify(subtotals).slice(0, 300));
-  console.log("[renderMasterTable] vendorPages sample:", Object.keys(vendorPages()).slice(0, 5));
-  console.log("[renderMasterTable] state.data.pages count:", state.data?.pages?.length);
   let total = 0;
   let visibleCount = 0;
   for (const v of vendors) {
