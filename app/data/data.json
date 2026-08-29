@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "source_pdf": "2026-Trade-Show-Book.pdf",
   "page_size": [
     612.0,
@@ -49111,7 +49111,8 @@
           ],
           "row": null
         }
-      ]
+      ],
+      "_bumped": true
     },
     {
       "index": 121,
