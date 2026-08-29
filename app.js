@@ -80,6 +80,7 @@ function scheduleSave() {
 }
 
 function persist() {
+  try {
     const payload = JSON.stringify({
       version: SCHEMA_VERSION,
       order: state.order,
