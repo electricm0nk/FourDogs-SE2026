@@ -570,7 +570,9 @@ function renderMasterTable() {
     return a.localeCompare(b);
   });
   const subtotals = computeVendorSubtotals();
-  tbody.innerHTML = "";
+  console.log("[renderMasterTable] order size:", Object.keys(state.order).length, "subtotals:", JSON.stringify(subtotals).slice(0, 300));
+  console.log("[renderMasterTable] vendorPages sample:", Object.keys(vendorPages()).slice(0, 5));
+  console.log("[renderMasterTable] state.data.pages count:", state.data?.pages?.length);
   let total = 0;
   let visibleCount = 0;
   for (const v of vendors) {
