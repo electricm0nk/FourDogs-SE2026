@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>Southeast Pet 2026 Order Builder</title>
+
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --panel: #ffffff;
+    --border: #d2d2d7;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --accent: #0071e3;
+    --accent-soft: #e1efff;
+    --danger: #d70015;
+    --ok: #34c759;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    background: var(--bg);
+    height: 100%;
+    overscroll-behavior: none;
+  }
+  body { display: flex; flex-direction: column; }
+
+  header {
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    padding-top: max(10px, env(safe-area-inset-top));
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header h1 { font-size: 17px; font-weight: 600; margin: 0; flex: 1; min-width: 0; }
+  .save-state { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+  .save-state.ok { color: var(--ok); }
+  .save-state.warn { color: var(--danger); }
+
+  .layout { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+  nav.sidebar {
+    width: 240px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-shrink: 0;
+  }
+  nav.sidebar h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 14px 6px;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+  nav.sidebar ul { list-style: none; padding: 0; margin: 0; }
+  nav.sidebar li button {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 10px 14px;
+    font-size: 15px;
+    color: var(--text);
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+  nav.sidebar li button.active {
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  nav.sidebar li button.has-input {
+    box-shadow: inset 3px 0 0 var(--ok);
+  }
+
+  main {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 14px;
+    background: var(--bg);
+  }
+
+  .vendor-header {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .vendor-header h2 { margin: 0 0 6px; font-size: 20px; }
+  .vendor-header .pages { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+  .vendor-header label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 10px;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+  .vendor-header input, .vendor-header textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .vendor-header textarea { min-height: 56px; resize: vertical; }
+
+  .page-block {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+  .page-block .page-title { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .page-canvas-wrap {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .page-canvas-wrap canvas { display: block; width: 100%; height: auto; }
+  .qty-overlay {
+    position: absolute;
+    background: rgba(255, 235, 59, 0.55);
+    border: 1.5px solid #f9a825;
+    border-radius: 3px;
+    color: #1d1d1f;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1;
+    padding: 0;
+    -moz-appearance: textfield;
+  }
+  .qty-overlay:focus { background: rgba(255, 235, 59, 0.95); border-color: var(--accent); outline: none; }
+  .qty-overlay::-webkit-outer-spin-button,
+  .qty-overlay::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .qty-overlay.has-value { background: rgba(52, 199, 89, 0.45); border-color: var(--ok); }
+
+  .toolbar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .toolbar button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .toolbar button.secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+  .toolbar button.danger { background: var(--danger); }
+  .toolbar .total { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; }
+  .toolbar .total .label { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.3px; }
+  .toolbar .total .amount { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .toolbar .total .amount.below-min { color: var(--danger); }
+  .toolbar .total .min-warn { font-size: 11px; color: var(--danger); }
+
+  .buyer-header {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .buyer-header label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+  .buyer-header input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+  }
+
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal { background: var(--panel); border-radius: 14px; padding: 20px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; }
+  .modal h3 { margin-top: 0; }
+  .modal .modal-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .sidebar-toggle { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 14px; cursor: pointer; }
+
+  @media (max-width: 720px) {
+    nav.sidebar {
+      position: fixed; top: 0; bottom: 0; left: 0;
+      width: 80%; max-width: 320px; z-index: 500;
+      transform: translateX(-100%);
+      transition: transform 0.2s;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    nav.sidebar.open { transform: translateX(0); }
+    .buyer-header { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle vendor list">☰</button>
+  <h1>SE Pet 2026 Order</h1>
+  <span class="save-state" id="saveState">Loading…</span>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h2>Vendors</h2>
+    <ul id="vendorList"></ul>
+  </nav>
+  <main id="main"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="modal">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
