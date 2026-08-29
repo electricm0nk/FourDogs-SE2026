@@ -22,6 +22,7 @@ const state = window._state = {
   order: {}, // key "page|widget" -> qty string
   vendorMeta: {}, // vendorName -> { notes }
   buyer: { storeName: "", city: "", rep: "", email: "", phone: "" },
+  master: { hiddenVendors: {} }, // vendorName -> bool (true = hidden in sidebar)
   filesHandle: null, // FileSystemFileHandle for iPad Safari auto-save
   filesHandleName: null,
 };
@@ -64,11 +65,12 @@ function loadOrder() {
       state.order = parsed.order || {};
       state.vendorMeta = parsed.vendorMeta || {};
       Object.assign(state.buyer, parsed.buyer || {});
+      state.master = parsed.master || { hiddenVendors: {} };
+      if (!state.master.hiddenVendors) state.master.hiddenVendors = {};
     }
   } catch (e) {
     console.warn("failed to load order:", e);
   }
-}
 
 let saveTimer = null;
 function scheduleSave() {
@@ -78,16 +80,15 @@ function scheduleSave() {
 }
 
 function persist() {
-  try {
     const payload = JSON.stringify({
       version: SCHEMA_VERSION,
       order: state.order,
       vendorMeta: state.vendorMeta,
       buyer: state.buyer,
+      master: state.master,
       savedAt: new Date().toISOString(),
     });
     localStorage.setItem(STORE_KEY, payload);
-    setSaveState("Saved ✓ " + new Date().toLocaleTimeString(), "ok");
     // If we have a Files handle, also write silently to iPad Files / iCloud Drive
     if (state.filesHandle) {
       writeToFilesHandle(payload).catch((e) => {
@@ -197,7 +198,6 @@ async function restoreFromFiles() {
     Object.assign(state.buyer, parsed.buyer || {});
     persist();
     $("#main").innerHTML = "";
-    renderBuyerHeader();
     renderToolbarIntoMain();
     renderVendorView(state.currentVendor);
     updateVendorNavIndicators();
@@ -240,9 +240,9 @@ async function boot() {
   state.pdfjsDoc = await pdfjsLib.getDocument({ data: state.pdfBytes.slice(0) }).promise;
   state.pdfBytesForLib = state.pdfBytes.slice(0);
 
+  setupMasterPanel();
+  renderMasterTable();
   buildVendorList();
-  renderBuyerHeader();
-  renderToolbarIntoMain();
 
   const map = vendorPages();
   const vendors = Object.keys(map).filter((v) => v !== "Other").sort();
@@ -279,7 +279,8 @@ function vendorPages() {
 function buildVendorList() {
   const ul = $("#vendorList");
   const map = vendorPages();
-  const vendors = Object.keys(map).sort((a, b) => {
+  // Filter out hidden vendors for sidebar display (export still uses all)
+  const vendors = Object.keys(map).filter((v) => !state.master.hiddenVendors[v]).sort((a, b) => {
     if (a === "Other") return 1;
     if (b === "Other") return -1;
     return a.localeCompare(b);
@@ -523,20 +524,115 @@ function computeSubtotal() {
   return total;
 }
 
+function computeVendorSubtotals() {
+  // Returns { vendorName: subtotal } for each vendor that has any qty inputs.
+  const result = {};
+  for (const [key, qtyStr] of Object.entries(state.order)) {
+    if (!qtyStr) continue;
+    const qty = parseInt(qtyStr, 10);
+    if (!qty || qty <= 0) continue;
+    const parts = key.split("|");
+    const pageIdx = parseInt(parts[0], 10);
+    const widgetName = parts[1];
+    const page = state.data.pages.find((p) => p.index === pageIdx);
+    if (!page) continue;
+    const w = page.widgets.find((ww) => ww.name === widgetName);
+    if (!w || !w.row || w.row.net_price == null) continue;
+    const vendor = page.vendor || "Other";
+    result[vendor] = (result[vendor] || 0) + qty * w.row.net_price;
+  }
+  return result;
+}
+
 function recomputeTotals() {
   const subtotal = computeSubtotal();
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
+  const hdr = $("#headerTotal");
+  if (hdr) hdr.textContent = "TOTAL ORDER: $" + subtotal.toFixed(2);
   if (!amt) return;
   amt.textContent = "$" + subtotal.toFixed(2);
   const belowMin = subtotal > 0 && subtotal < ORDER_MIN;
   amt.classList.toggle("below-min", belowMin);
   if (warn) warn.style.display = belowMin ? "" : "none";
+  renderMasterTable();
+function renderMasterTable() {
+  const tbody = $("#m-table-body");
+  if (!tbody) return;
+  const map = vendorPages();
+  const vendors = Object.keys(map).sort((a, b) => {
+    if (a === "Other") return 1;
+    if (b === "Other") return -1;
+    return a.localeCompare(b);
+  });
+  const subtotals = computeVendorSubtotals();
+  tbody.innerHTML = "";
+  let total = 0;
+  let visibleCount = 0;
+  for (const v of vendors) {
+    const subtotal = subtotals[v] || 0;
+    total += subtotal;
+    const isHidden = !!state.master.hiddenVendors[v];
+    if (!isHidden) visibleCount++;
+    const tr = document.createElement("tr");
+    if (isHidden) tr.style.opacity = "0.45";
+    tr.innerHTML =
+      '<td>' + escapeHtml(v) + '</td>' +
+      '<td class="mp-num">$' + subtotal.toFixed(2) + '</td>' +
+      '<td style="text-align:center"><input type="checkbox" data-vendor="' + cssEscapeAttr(v) + '"' + (isHidden ? ' checked' : '') + '></td>';
+    tbody.appendChild(tr);
+  }
+  // Footer row with grand total
+  const footer = document.createElement("tr");
+  footer.innerHTML = '<td><strong>TOTAL</strong></td><td class="mp-num"><strong>$' + total.toFixed(2) + '</strong></td><td></td>';
+  tbody.appendChild(footer);
+  // Wire up hide checkboxes
+  tbody.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+    cb.addEventListener("change", () => {
+      const vendor = cb.dataset.vendor;
+      if (cb.checked) state.master.hiddenVendors[vendor] = true;
+      else delete state.master.hiddenVendors[vendor];
+      scheduleSave();
+      renderMasterTable();
+      buildVendorList();
+    });
+  });
+  if (visibleCount === 0) {
+    const tr = document.createElement("tr");
+    tr.className = "mp-empty";
+    tr.innerHTML = '<td colspan="3">All vendors hidden</td>';
+    tbody.appendChild(tr);
+  }
+}
+
+function setupMasterPanel() {
+  const storeInput = $("#m-store");
+  const cityInput = $("#m-city");
+  if (storeInput) {
+    storeInput.value = state.buyer.storeName || "";
+    storeInput.addEventListener("input", (e) => {
+      state.buyer.storeName = e.target.value;
+      scheduleSave();
+      // Update buyer header if visible
+      const bh = $("#bh-store");
+      if (bh) bh.value = e.target.value;
+    });
+  }
+  if (cityInput) {
+    cityInput.value = state.buyer.city || "";
+    cityInput.addEventListener("input", (e) => {
+      state.buyer.city = e.target.value;
+      scheduleSave();
+      const bh = $("#bh-city");
+      if (bh) bh.value = e.target.value;
+    });
+  }
 }
 
 function updateVendorNavIndicators() {
   const map = vendorPages();
-  for (const v of Object.keys(map)) {
+  const vendors = Object.keys(map).filter((v) => !state.master.hiddenVendors[v]);
+   for (const v of vendors) {
     const pages = map[v];
     const any = pages.some((p) => Object.keys(state.order).some((k) => k.startsWith(p.index + "|") && state.order[k]));
     const btn = $("#vendorList button[data-vendor='" + cssEscapeAttr(v) + "']");
@@ -577,8 +673,8 @@ function restoreJson() {
       persist();
       // re-render
       $("#main").innerHTML = "";
-      renderBuyerHeader();
       renderToolbarIntoMain();
+
       renderVendorView(state.currentVendor);
       updateVendorNavIndicators();
       toast("Restored ✓");

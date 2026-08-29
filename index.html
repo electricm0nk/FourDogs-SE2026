@@ -45,9 +45,8 @@
     z-index: 100;
   }
   header h1 { font-size: 17px; font-weight: 600; margin: 0; flex: 1; min-width: 0; }
+  .header-total { font-size: 16px; font-weight: 700; color: var(--text); margin-left: 18px; padding: 6px 12px; background: var(--accent-soft); border-radius: 8px; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .save-state { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
-  .save-state.ok { color: var(--ok); }
-  .save-state.warn { color: var(--danger); }
 
   .layout { display: flex; flex: 1; overflow: hidden; min-height: 0; }
   nav.sidebar {
@@ -65,9 +64,18 @@
     padding: 12px 14px 6px;
     margin: 0;
     letter-spacing: 0.5px;
-  }
   nav.sidebar ul { list-style: none; padding: 0; margin: 0; }
-  nav.sidebar li button {
+  #masterPanel { padding: 12px 14px; border-bottom: 1px solid var(--border); background: #fafafa; }
+  #masterPanel .mp-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--muted); margin-top: 8px; margin-bottom: 4px; letter-spacing: 0.3px; }
+  #masterPanel input[type="text"], #masterPanel input:not([type]) {
+    width: 100%; padding: 7px 10px; font-size: 14px; border: 1px solid var(--border); border-radius: 6px; background: #fff; margin-bottom: 4px;
+  }
+  #masterPanel .mp-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+  #masterPanel .mp-table th, #masterPanel .mp-table td { padding: 6px 4px; text-align: left; border-bottom: 1px solid var(--border); }
+  #masterPanel .mp-table th { font-weight: 600; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+  #masterPanel .mp-table td.mp-num, #masterPanel .mp-table th.mp-num { text-align: right; font-variant-numeric: tabular-nums; }
+  #masterPanel .mp-table input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
+  #masterPanel .mp-table tr.mp-empty td { color: var(--muted); font-style: italic; padding: 12px 4px; text-align: center; }
     width: 100%;
     text-align: left;
     background: none;
@@ -273,11 +281,23 @@
 <header>
   <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle vendor list">☰</button>
   <h1>SE Pet 2026 Order</h1>
+  <span class="header-total" id="headerTotal">TOTAL ORDER: $0.00</span>
   <span class="save-state" id="saveState">Loading…</span>
 </header>
 
 <div class="layout">
   <nav class="sidebar" id="sidebar">
+    <section id="masterPanel">
+      <h2>Master</h2>
+      <label class="mp-label">Store name (writes to all pages)</label>
+      <input id="m-store" placeholder="My Pet Store" />
+      <label class="mp-label">City / State</label>
+      <input id="m-city" placeholder="Atlanta, GA" />
+      <table class="mp-table">
+        <thead><tr><th>Vendor</th><th class="mp-num">Subtotal</th><th title="Hide from sidebar">Hide</th></tr></thead>
+        <tbody id="m-table-body"></tbody>
+      </table>
+    </section>
     <h2>Vendors</h2>
     <ul id="vendorList"></ul>
   </nav>
