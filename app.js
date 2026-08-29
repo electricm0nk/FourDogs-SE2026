@@ -71,8 +71,9 @@ function loadOrder() {
   } catch (e) {
     console.warn("failed to load order:", e);
   }
-
+ }
 let saveTimer = null;
+
 function scheduleSave() {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(persist, 250);
