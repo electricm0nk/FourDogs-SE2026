@@ -557,6 +557,7 @@ function recomputeTotals() {
   amt.classList.toggle("below-min", belowMin);
   if (warn) warn.style.display = belowMin ? "" : "none";
   renderMasterTable();
+}
 function renderMasterTable() {
   const tbody = $("#m-table-body");
   if (!tbody) return;
