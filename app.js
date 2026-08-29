@@ -467,8 +467,12 @@ function overlayWidgets(wrap, pageData, viewport) {
     // Use percentages so overlay stays aligned when the wrap shrinks
     // to fit its container. PDF coords (0..pageW, 0..pageH with origin
     // bottom-left) map to % directly.
+    // PDF.js renders with origin at top-left using PDF spec Y values
+    // directly (no flip). So PDF y=178 (first table first row) maps to
+    // screen y=178 which is the upper portion of the rendered page.
+    // Use y0 directly as the top edge.
     const leftPct = (x0 / pageW) * 100;
-    const topPct = ((pageH - y1) / pageH) * 100;
+    const topPct = (y0 / pageH) * 100;
     const wPct = ((x1 - x0) / pageW) * 100;
     const hPct = ((y1 - y0) / pageH) * 100;
     input.style.left = leftPct + "%";
