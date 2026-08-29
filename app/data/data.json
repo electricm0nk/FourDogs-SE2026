@@ -816,7 +816,7 @@
     },
     {
       "index": 9,
-      "vendor": "A Pup Above",
+      "vendor": null,
       "has_text": true,
       "widget_count": 25,
       "widgets": [
@@ -2164,7 +2164,7 @@
     },
     {
       "index": 13,
-      "vendor": "Acana",
+      "vendor": null,
       "has_text": true,
       "widget_count": 40,
       "widgets": [
@@ -6983,7 +6983,7 @@
     },
     {
       "index": 23,
-      "vendor": "Austin & Kat",
+      "vendor": null,
       "has_text": true,
       "widget_count": 9,
       "widgets": [
@@ -7173,7 +7173,7 @@
     },
     {
       "index": 24,
-      "vendor": "Austin & Kat",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -9486,7 +9486,7 @@
     },
     {
       "index": 27,
-      "vendor": "Barkworthies",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -10306,7 +10306,7 @@
     },
     {
       "index": 28,
-      "vendor": "Barkworthies",
+      "vendor": null,
       "has_text": true,
       "widget_count": 45,
       "widgets": [
@@ -11252,7 +11252,7 @@
     },
     {
       "index": 29,
-      "vendor": "Barkworthies",
+      "vendor": null,
       "has_text": true,
       "widget_count": 45,
       "widgets": [
@@ -12198,7 +12198,7 @@
     },
     {
       "index": 30,
-      "vendor": "Barkworthies",
+      "vendor": null,
       "has_text": true,
       "widget_count": 45,
       "widgets": [
@@ -13144,7 +13144,7 @@
     },
     {
       "index": 31,
-      "vendor": "Barkworthies",
+      "vendor": null,
       "has_text": true,
       "widget_count": 45,
       "widgets": [
@@ -14090,7 +14090,7 @@
     },
     {
       "index": 32,
-      "vendor": "Barkworthies",
+      "vendor": null,
       "has_text": true,
       "widget_count": 5,
       "widgets": [
@@ -14232,7 +14232,7 @@
     },
     {
       "index": 34,
-      "vendor": "Benebone",
+      "vendor": null,
       "has_text": true,
       "widget_count": 40,
       "widgets": [
@@ -15788,7 +15788,7 @@
     },
     {
       "index": 36,
-      "vendor": "Benebone",
+      "vendor": null,
       "has_text": true,
       "widget_count": 10,
       "widgets": [
@@ -16070,7 +16070,7 @@
     },
     {
       "index": 39,
-      "vendor": "Big Country Raw",
+      "vendor": null,
       "has_text": true,
       "widget_count": 18,
       "widgets": [
@@ -16449,7 +16449,7 @@
     },
     {
       "index": 40,
-      "vendor": "Big Country Raw",
+      "vendor": null,
       "has_text": true,
       "widget_count": 18,
       "widgets": [
@@ -16709,7 +16709,7 @@
     },
     {
       "index": 41,
-      "vendor": "Big Country Raw",
+      "vendor": null,
       "has_text": true,
       "widget_count": 18,
       "widgets": [
@@ -16969,7 +16969,7 @@
     },
     {
       "index": 42,
-      "vendor": "Big Country Raw",
+      "vendor": null,
       "has_text": true,
       "widget_count": 18,
       "widgets": [
@@ -17348,7 +17348,7 @@
     },
     {
       "index": 43,
-      "vendor": "Big Country Raw",
+      "vendor": null,
       "has_text": true,
       "widget_count": 25,
       "widgets": [
@@ -17874,7 +17874,7 @@
     },
     {
       "index": 44,
-      "vendor": "Big Country Raw",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -19725,7 +19725,7 @@
     },
     {
       "index": 47,
-      "vendor": "Bocce\u2019s Bakery",
+      "vendor": null,
       "has_text": true,
       "widget_count": 38,
       "widgets": [
@@ -20721,7 +20721,7 @@
     },
     {
       "index": 49,
-      "vendor": "Bones & Co",
+      "vendor": null,
       "has_text": true,
       "widget_count": 19,
       "widgets": [
@@ -21376,7 +21376,7 @@
     },
     {
       "index": 53,
-      "vendor": "Brightkins",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -24511,7 +24511,7 @@
     },
     {
       "index": 59,
-      "vendor": "Carna4",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -24547,7 +24547,7 @@
     },
     {
       "index": 60,
-      "vendor": "Carna4",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -30304,7 +30304,7 @@
     },
     {
       "index": 70,
-      "vendor": "Dave\u2019s",
+      "vendor": null,
       "has_text": true,
       "widget_count": 15,
       "widgets": [
@@ -36890,7 +36890,7 @@
     },
     {
       "index": 83,
-      "vendor": "Earth Animal",
+      "vendor": null,
       "has_text": true,
       "widget_count": 3,
       "widgets": [
@@ -37025,7 +37025,7 @@
     },
     {
       "index": 85,
-      "vendor": "Earthbath",
+      "vendor": null,
       "has_text": true,
       "widget_count": 4,
       "widgets": [
@@ -38049,7 +38049,7 @@
     },
     {
       "index": 94,
-      "vendor": "Farmina",
+      "vendor": null,
       "has_text": true,
       "widget_count": 1,
       "widgets": [
@@ -40285,7 +40285,7 @@
     },
     {
       "index": 104,
-      "vendor": "Farmina",
+      "vendor": null,
       "has_text": true,
       "widget_count": 38,
       "widgets": [
@@ -48763,7 +48763,7 @@
     },
     {
       "index": 119,
-      "vendor": "Fringe Studio",
+      "vendor": null,
       "has_text": false,
       "widget_count": 16,
       "widgets": [
@@ -57945,7 +57945,7 @@
     },
     {
       "index": 131,
-      "vendor": "F4058",
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 11,
       "widgets": [
@@ -58717,7 +58717,7 @@
     },
     {
       "index": 133,
-      "vendor": "F4057",
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 11,
       "widgets": [
@@ -60189,7 +60189,7 @@
     },
     {
       "index": 135,
-      "vendor": "Fromm",
+      "vendor": null,
       "has_text": true,
       "widget_count": 28,
       "widgets": [
@@ -61402,7 +61402,7 @@
     },
     {
       "index": 137,
-      "vendor": "Furever Fierce",
+      "vendor": null,
       "has_text": true,
       "widget_count": 33,
       "widgets": [
@@ -65792,14 +65792,14 @@
     },
     {
       "index": 145,
-      "vendor": "GivePet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 0,
       "widgets": []
     },
     {
       "index": 146,
-      "vendor": "GivePet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 3,
       "widgets": [
@@ -65849,7 +65849,7 @@
     },
     {
       "index": 147,
-      "vendor": "GivePet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 0,
       "widgets": []
@@ -67862,7 +67862,7 @@
     },
     {
       "index": 152,
-      "vendor": "Green Coast Pet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -68326,7 +68326,7 @@
     },
     {
       "index": 161,
-      "vendor": "Growl",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -79389,7 +79389,7 @@
     },
     {
       "index": 178,
-      "vendor": "Honest To Goodness",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -79425,7 +79425,7 @@
     },
     {
       "index": 179,
-      "vendor": "Honest To Goodness",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -86645,7 +86645,7 @@
     },
     {
       "index": 189,
-      "vendor": "Huxley & Kent",
+      "vendor": null,
       "has_text": true,
       "widget_count": 3,
       "widgets": [
@@ -86695,7 +86695,7 @@
     },
     {
       "index": 190,
-      "vendor": "Huxley & Kent",
+      "vendor": null,
       "has_text": true,
       "widget_count": 3,
       "widgets": [
@@ -88204,7 +88204,7 @@
     },
     {
       "index": 194,
-      "vendor": "Icelandic+",
+      "vendor": null,
       "has_text": true,
       "widget_count": 25,
       "widgets": [
@@ -88730,7 +88730,7 @@
     },
     {
       "index": 195,
-      "vendor": "Icelandic+",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -90847,7 +90847,7 @@
     },
     {
       "index": 198,
-      "vendor": "Inaba",
+      "vendor": null,
       "has_text": true,
       "widget_count": 21,
       "widgets": [
@@ -91458,7 +91458,7 @@
     },
     {
       "index": 200,
-      "vendor": "IndiPets",
+      "vendor": null,
       "has_text": true,
       "widget_count": 13,
       "widgets": [
@@ -91964,7 +91964,7 @@
     },
     {
       "index": 202,
-      "vendor": "Intersand",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -94347,7 +94347,7 @@
     },
     {
       "index": 205,
-      "vendor": "Jolly Pets",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -100085,7 +100085,7 @@
     },
     {
       "index": 218,
-      "vendor": "Longevity15",
+      "vendor": null,
       "has_text": true,
       "widget_count": 37,
       "widgets": [
@@ -100863,7 +100863,7 @@
     },
     {
       "index": 219,
-      "vendor": "Longevity15",
+      "vendor": null,
       "has_text": true,
       "widget_count": 21,
       "widgets": [
@@ -101881,7 +101881,7 @@
     },
     {
       "index": 222,
-      "vendor": "Messy Mutts",
+      "vendor": null,
       "has_text": true,
       "widget_count": 21,
       "widgets": [
@@ -110547,7 +110547,7 @@
     },
     {
       "index": 236,
-      "vendor": "WHOLESOMES ISO 2026",
+      "vendor": null,
       "has_text": true,
       "widget_count": 13,
       "widgets": [
@@ -122194,7 +122194,7 @@
     },
     {
       "index": 263,
-      "vendor": "Nootie",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -133784,7 +133784,7 @@
     },
     {
       "index": 282,
-      "vendor": "Open Farm",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -135292,7 +135292,7 @@
     },
     {
       "index": 285,
-      "vendor": "Orijen",
+      "vendor": null,
       "has_text": true,
       "widget_count": 40,
       "widgets": [
@@ -154708,7 +154708,7 @@
     },
     {
       "index": 318,
-      "vendor": "Pure Vita",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -157278,7 +157278,7 @@
     },
     {
       "index": 326,
-      "vendor": "Raised Right",
+      "vendor": null,
       "has_text": true,
       "widget_count": 4,
       "widgets": [
@@ -157392,7 +157392,7 @@
     },
     {
       "index": 328,
-      "vendor": "Raised Right",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -166226,7 +166226,7 @@
     },
     {
       "index": 349,
-      "vendor": "Smallbatch",
+      "vendor": null,
       "has_text": true,
       "widget_count": 3,
       "widgets": [
@@ -166283,7 +166283,7 @@
     },
     {
       "index": 350,
-      "vendor": "Smallbatch",
+      "vendor": null,
       "has_text": true,
       "widget_count": 3,
       "widgets": [
@@ -168761,7 +168761,7 @@
     },
     {
       "index": 357,
-      "vendor": "SquarePet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 3,
       "widgets": [
@@ -169415,7 +169415,7 @@
     },
     {
       "index": 360,
-      "vendor": "SquarePet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 26,
       "widgets": [
@@ -178338,7 +178338,7 @@
     },
     {
       "index": 379,
-      "vendor": "Treat Planet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 14,
       "widgets": [
@@ -178633,7 +178633,7 @@
     },
     {
       "index": 380,
-      "vendor": "Treat Planet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 14,
       "widgets": [
@@ -178978,7 +178978,7 @@
     },
     {
       "index": 382,
-      "vendor": "Treat Planet",
+      "vendor": null,
       "has_text": true,
       "widget_count": 17,
       "widgets": [
@@ -179694,7 +179694,7 @@
     },
     {
       "index": 384,
-      "vendor": "TropiClean",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -179766,7 +179766,7 @@
     },
     {
       "index": 386,
-      "vendor": "TropiClean",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -203740,7 +203740,7 @@
     },
     {
       "index": 427,
-      "vendor": "Wondercide",
+      "vendor": null,
       "has_text": true,
       "widget_count": 22,
       "widgets": [
@@ -214750,7 +214750,7 @@
     },
     {
       "index": 447,
-      "vendor": "Zignature",
+      "vendor": null,
       "has_text": true,
       "widget_count": 39,
       "widgets": [
@@ -216090,7 +216090,7 @@
     },
     {
       "index": 450,
-      "vendor": "ZIWI",
+      "vendor": null,
       "has_text": true,
       "widget_count": 2,
       "widgets": [
@@ -216126,7 +216126,7 @@
     },
     {
       "index": 451,
-      "vendor": "ZIWI",
+      "vendor": null,
       "has_text": true,
       "widget_count": 24,
       "widgets": [

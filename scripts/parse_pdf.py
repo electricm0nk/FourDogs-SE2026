@@ -85,7 +85,7 @@ def detect_vendor_from_content(page_text: str) -> str | None:
     if not page_text:
         return None
     tl = page_text.lower()
-    if "fromm family foods" in tl:
+    if "fromm family foods" in tl or "fromm.com" in tl or "pick six" in tl:
         return "Fromm"
     return None
 
@@ -286,11 +286,22 @@ def main():
         content_vendor = detect_vendor_from_content(page_text) if has_text else None
         # Then header-based
         header_vendor = detect_vendor(page_text) if has_text else None
-        vendor = content_vendor or header_vendor or prev_vendor
+        # Only carry prev_vendor forward if neither detector fires AND the page
+        # looks like a continuation of the previous vendor (e.g. page is blank
+        # or the previous vendor has no title line that would override it).
+        # For strong content matches like Fromm, do NOT carry forward into
+        # unrelated pages.
+        if content_vendor:
+            vendor = content_vendor
+        elif header_vendor:
+            vendor = header_vendor
+        elif prev_vendor and prev_vendor.startswith("Fromm") and not has_text:
+            vendor = prev_vendor
+        else:
+            vendor = None
         if vendor:
             vendor_counts[vendor] += 1
         prev_vendor = vendor if vendor else prev_vendor
-
         rows = group_text_into_rows(page) if has_text else []
         data_rows = []
         for y, spans in rows:
