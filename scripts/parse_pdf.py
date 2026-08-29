@@ -2,10 +2,10 @@
 """
 Parse the 2026-Trade-Show-Book.pdf into a structured JSON catalog.
 
-Output schema (v8):
+Output schema (v9):
 
 {
-  "version": 8,
+  "version": 9,
   "source_pdf": "...",
   "page_size": [w, h],
   "pages": [
@@ -14,18 +14,17 @@ Output schema (v8):
       "vendor": "Acana" | null,
       "has_text": true,
       "widgets": [
-        {
-          "name": "8569",
-          "kind": "qty" | "store_name" | "total" | "unknown",
-          "rect": [x0, y0, x1, y1],
-          "upc": "..." | null,
-          "net_price": 85.69 | null,
-          "row": {...matched row data...} | null
-        }
+        { "name": "...", "kind": "qty|store_name|total|unknown",
+          "rect": [x0, y0, x1, y1], "upc": "...", "net_price": 85.69, "row": {...} }
       ]
     }
   ]
 }
+
+Vendor detection:
+  1. Scan page text for known strong brands (Fromm, etc.)
+  2. Fall back to header heuristic (4th line after boilerplate)
+  3. Carry forward previous vendor for pages with no detectable vendor
 
 Widget classification uses page-level layout detection:
   1. Identify column header rows (QTY, PURCHASE, $, NET, #, etc.)
@@ -77,7 +76,26 @@ EXCLUDED_HEADER_TOKENS = {
 }
 
 
+def detect_vendor_from_content(page_text: str) -> str | None:
+    """Detect vendor from page-wide content clues (branding, footers).
+
+    Some vendor pages use generic form codes (e.g. F3856SP) as titles but
+    are actually Fromm forms. We detect those via content text.
+    """
+    if not page_text:
+        return None
+    tl = page_text.lower()
+    if "fromm family foods" in tl:
+        return "Fromm"
+    return None
+
+
 def detect_vendor(page_text):
+    """Detect vendor name from the heading line below the email boilerplate.
+
+    Returns the vendor name, or None if the page header doesn't look like a
+    vendor name (e.g. it's "RETAILER", "SHOW", or a page number).
+    """
     lines = [ln.strip() for ln in page_text.splitlines() if ln.strip()]
     idx = 0
     for ln in lines:
@@ -144,9 +162,7 @@ def detect_column_regions(rows):
     where each is a list of (x_min, x_max) bands.
 
     Widgets are typically 15-20pt to the LEFT of their column header text
-    (the header label sits to the right of the input box). Bands are
-    calibrated to handle Fromm's tight #/$ layout where the two columns
-    sit close together.
+    (the header label sits to the right of the input box).
     """
     qty_cols = []
     excluded_cols = []
@@ -154,8 +170,6 @@ def detect_column_regions(rows):
         for x, t in spans:
             tl = t.lower().strip().rstrip(".:").replace("  ", " ")
             if tl in QTY_HEADER_TOKENS:
-                # Tight band for "#" (Fromm # column) so it doesn't shadow the
-                # adjacent "$" column. Wider band for "qty" / "purchase".
                 if tl == "#":
                     qty_cols.append((x - 30, x + 10))
                 else:
@@ -184,28 +198,23 @@ def classify_widget(raw_name, rect, page_columns):
     qty_cols, excluded_cols = page_columns
     cx = (x0 + x1) / 2
 
-    # 1. Store name: by name OR footer band
     if "STORENAME" in upper or "CITYSTATE" in upper:
         return "store_name"
     if y0 >= 700 and (x1 - x0) > 200:
         return "store_name"
 
-    # 2. TOTAL by name
     if upper.startswith("TOTAL"):
         return "total"
 
-    # 3. Numeric name (NET cents) — standard convention
     m = re.match(r"^(\d+)(?:[ _](\d+))?$", name)
     if m:
         cents = int(m.group(1))
         occ = int(m.group(2)) if m.group(2) else 0
         return ("qty", cents / 100.0, occ)
 
-    # 4. Right column text widget on standard page (legacy heuristic)
     if x0 >= 565 and y1 < 750:
         return ("qty", None, 0)
 
-    # 5. Page-layout based classification
     for (xmin, xmax) in excluded_cols:
         if xmin <= cx <= xmax:
             return "unknown"
@@ -213,7 +222,6 @@ def classify_widget(raw_name, rect, page_columns):
         if xmin <= cx <= xmax:
             return ("qty", None, 0)
 
-    # 6. Default unknown
     return "unknown"
 
 
@@ -274,7 +282,11 @@ def main():
         page_text = page.get_text("text").strip()
         has_text = bool(page_text)
 
-        vendor = detect_vendor(page_text) if has_text else prev_vendor
+        # Try content-based vendor detection first (handles Fromm etc.)
+        content_vendor = detect_vendor_from_content(page_text) if has_text else None
+        # Then header-based
+        header_vendor = detect_vendor(page_text) if has_text else None
+        vendor = content_vendor or header_vendor or prev_vendor
         if vendor:
             vendor_counts[vendor] += 1
         prev_vendor = vendor if vendor else prev_vendor
@@ -339,7 +351,7 @@ def main():
         })
 
     out = {
-        "version": 8,
+        "version": 9,
         "source_pdf": PDF_PATH.name,
         "page_size": [round(doc[0].rect.width, 2), round(doc[0].rect.height, 2)],
         "pages": pages_out,
@@ -355,6 +367,11 @@ def main():
     print(f"qty widgets matched to UPC rows: {matched_qty}")
     print(f"qty widgets unmatched: {unmatched_qty}")
     print(f"distinct vendors: {len(vendor_counts)}")
+    print("Fromm pages:")
+    fromm_pages = [p for p in pages_out if p["vendor"] == "Fromm"]
+    for p in fromm_pages:
+        qty = sum(1 for w in p["widgets"] if w["kind"] == "qty")
+        print(f"  page {p['index']}: {p['widget_count']} widgets, {qty} qty")
     print("top vendors:")
     for v, n in vendor_counts.most_common(15):
         print(f"  {n:4d}  {v}")
