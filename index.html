@@ -144,20 +144,25 @@
   .page-canvas-wrap canvas { display: block; width: 100%; height: auto; }
   .qty-overlay {
     position: absolute;
-    background: rgba(255, 235, 59, 0.55);
-    border: 1.5px solid #f9a825;
+    background: rgba(255, 235, 59, 0.6);
+    border: 2px solid #f9a825;
     border-radius: 3px;
     color: #1d1d1f;
     font-size: 14px;
+    font-weight: 600;
     text-align: center;
     line-height: 1;
     padding: 0;
     -moz-appearance: textfield;
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.6);
   }
-  .qty-overlay:focus { background: rgba(255, 235, 59, 0.95); border-color: var(--accent); outline: none; }
+  .qty-overlay:hover { background: rgba(255, 235, 59, 0.9); border-color: #c17900; }
+  .qty-overlay:focus { background: rgba(255, 235, 59, 1); border-color: var(--accent); outline: none; box-shadow: 0 0 0 2px var(--accent); }
   .qty-overlay::-webkit-outer-spin-button,
   .qty-overlay::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .qty-overlay.has-value { background: rgba(52, 199, 89, 0.45); border-color: var(--ok); }
+  .qty-overlay.has-value { background: rgba(52, 199, 89, 0.6); border-color: var(--ok); color: #fff; }
 
   .toolbar {
     background: var(--panel);
