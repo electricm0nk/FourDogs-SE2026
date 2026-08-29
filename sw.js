@@ -1,12 +1,12 @@
-// Service worker for Southeast Pet 2026 Order Builder
+const CACHE = "sepet2026-v2";
 // Caches HTML, JS, PDF, and data so the app works offline.
 
 const ASSETS = [
   "./",
-  "app/index.html",
-  "app/app.js",
-  "app/data/data.json",
-  "app/assets/2026-Trade-Show-Book.pdf",
+  "index.html",
+  "app.js",
+  "data/data.json",
+  "assets/2026-Trade-Show-Book.pdf",
 ];
 
 self.addEventListener("install", (event) => {
@@ -48,7 +48,7 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE).then((c) => c.put(event.request, copy));
         }
         return res;
-      }).catch(() => caches.match("./app/index.html"));
+      }).catch(() => caches.match("./index.html"));
     })
   );
 });
