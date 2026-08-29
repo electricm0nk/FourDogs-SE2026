@@ -2,10 +2,10 @@
 """
 Parse the 2026-Trade-Show-Book.pdf into a structured JSON catalog.
 
-Output schema (v4):
+Output schema (v8):
 
 {
-  "version": 4,
+  "version": 8,
   "source_pdf": "...",
   "page_size": [w, h],
   "pages": [
@@ -18,7 +18,7 @@ Output schema (v4):
           "name": "8569",
           "kind": "qty" | "store_name" | "total" | "unknown",
           "rect": [x0, y0, x1, y1],
-          "upc": "860000813723" | null,
+          "upc": "..." | null,
           "net_price": 85.69 | null,
           "row": {...matched row data...} | null
         }
@@ -27,14 +27,10 @@ Output schema (v4):
   ]
 }
 
-Classification rules:
-  - STORE NAME field: name contains STORE NAME / CITYSTATE / STORENAME,
-    OR rect is a wide field in the bottom band of the page (y0 >= 700).
-  - TOTAL field: name starts with TOTAL.
-  - QTY field: name is numeric (NET price in cents, with optional _N
-    disambiguator) OR rect sits in the right column (x0 >= 565) and is
-    not in the bottom band.
-  - Anything else: unknown.
+Widget classification uses page-level layout detection:
+  1. Identify column header rows (QTY, PURCHASE, $, NET, #, etc.)
+  2. Map those to x-ranges
+  3. Classify each widget by which x-range its center falls into
 """
 
 import json
@@ -45,7 +41,7 @@ from pathlib import Path
 
 import pymupdf
 
-PDF_PATH = Path(__file__).resolve().parents[1] / "app" / "assets" / "2026-Trade-Show-Book.pdf"
+PDF_PATH = Path(__file__).resolve().parents[1] / "assets" / "2026-Trade-Show-Book.pdf"
 OUT_PATH = Path(__file__).resolve().parents[1] / "app" / "data" / "data.json"
 
 HEADER_BOILERPLATE_LINES = {
@@ -69,8 +65,19 @@ COL_LIST = (460, 500)
 COL_PCT = (500, 535)
 COL_NET = (535, 570)
 
+# Tokens that mark a user-input qty column (header text on the page)
+QTY_HEADER_TOKENS = {
+    "qty", "purchase", "qty.", "qty:",
+    "free", "min", "purchase free", "purchase qty", "qty/purchase",
+    "#",  # Fromm pages use "#" header for qty column
+}
+# Tokens that mark an EXCLUDED column (computed totals, prices — never user-edited)
+EXCLUDED_HEADER_TOKENS = {
+    "$", "net", "list", "%off", "discount", "save", "total", "tot",
+}
 
-def detect_vendor(page_text: str) -> str | None:
+
+def detect_vendor(page_text):
     lines = [ln.strip() for ln in page_text.splitlines() if ln.strip()]
     idx = 0
     for ln in lines:
@@ -80,7 +87,6 @@ def detect_vendor(page_text: str) -> str | None:
             break
     if idx >= len(lines):
         return None
-    # Skip pure-digit lines (page numbers printed on the page)
     while idx < len(lines) and re.fullmatch(r"\d+", lines[idx]):
         idx += 1
     if idx >= len(lines):
@@ -92,35 +98,8 @@ def detect_vendor(page_text: str) -> str | None:
         return candidate
     return None
 
-def classify_widget(raw_name: str, rect) -> dict:
-    name = (raw_name or "").strip()
-    upper = name.upper().replace(" ", "")
-    x0, y0, x1, y1 = rect
 
-    # Store name: name says so, OR rect is wide + in bottom band
-    if "STORENAME" in upper or "CITYSTATE" in upper:
-        return {"kind": "store_name", "net_price": None, "occurrence": 0}
-    if y0 >= 700 and (x1 - x0) > 200:
-        return {"kind": "store_name", "net_price": None, "occurrence": 0}
-
-    if upper.startswith("TOTAL"):
-        return {"kind": "total", "net_price": None, "occurrence": 0}
-
-    # Numeric name (NET price in cents, optional _N disambiguator)
-    m = re.match(r"^(\d+)(?:[ _](\d+))?$", name)
-    if m:
-        cents = int(m.group(1))
-        occ = int(m.group(2)) if m.group(2) else 0
-        return {"kind": "qty", "net_price": cents / 100.0, "occurrence": occ}
-
-    # Right column text widget (excluding footer) is a qty cell
-    if x0 >= 565 and y1 < 750:
-        return {"kind": "qty", "net_price": None, "occurrence": 0}
-
-    return {"kind": "unknown", "net_price": None, "occurrence": 0}
-
-
-def group_text_into_rows(page, y_tol: float = 1.5):
+def group_text_into_rows(page, y_tol=1.5):
     d = page.get_text("dict")
     rows = defaultdict(list)
     for blk in d.get("blocks", []):
@@ -160,46 +139,117 @@ def group_text_into_rows(page, y_tol: float = 1.5):
     return out
 
 
+def detect_column_regions(rows):
+    """Scan header rows for column tokens. Returns (qty_cols, excluded_cols)
+    where each is a list of (x_min, x_max) bands.
+
+    Widgets are typically 15-20pt to the LEFT of their column header text
+    (the header label sits to the right of the input box). Bands are
+    calibrated to handle Fromm's tight #/$ layout where the two columns
+    sit close together.
+    """
+    qty_cols = []
+    excluded_cols = []
+    for y, spans in rows[:80]:
+        for x, t in spans:
+            tl = t.lower().strip().rstrip(".:").replace("  ", " ")
+            if tl in QTY_HEADER_TOKENS:
+                # Tight band for "#" (Fromm # column) so it doesn't shadow the
+                # adjacent "$" column. Wider band for "qty" / "purchase".
+                if tl == "#":
+                    qty_cols.append((x - 30, x + 10))
+                else:
+                    qty_cols.append((x - 40, x + 30))
+            elif tl in EXCLUDED_HEADER_TOKENS:
+                excluded_cols.append((x - 10, x + 50))
+
+    def merge(bands):
+        if not bands:
+            return []
+        bands = sorted(bands, key=lambda b: b[0])
+        merged = [list(bands[0])]
+        for b in bands[1:]:
+            if b[0] <= merged[-1][1] + 5:
+                merged[-1][1] = max(merged[-1][1], b[1])
+            else:
+                merged.append(list(b))
+        return merged
+    return merge(qty_cols), merge(excluded_cols)
+
+
+def classify_widget(raw_name, rect, page_columns):
+    name = (raw_name or "").strip()
+    upper = name.upper().replace(" ", "")
+    x0, y0, x1, y1 = rect
+    qty_cols, excluded_cols = page_columns
+    cx = (x0 + x1) / 2
+
+    # 1. Store name: by name OR footer band
+    if "STORENAME" in upper or "CITYSTATE" in upper:
+        return "store_name"
+    if y0 >= 700 and (x1 - x0) > 200:
+        return "store_name"
+
+    # 2. TOTAL by name
+    if upper.startswith("TOTAL"):
+        return "total"
+
+    # 3. Numeric name (NET cents) — standard convention
+    m = re.match(r"^(\d+)(?:[ _](\d+))?$", name)
+    if m:
+        cents = int(m.group(1))
+        occ = int(m.group(2)) if m.group(2) else 0
+        return ("qty", cents / 100.0, occ)
+
+    # 4. Right column text widget on standard page (legacy heuristic)
+    if x0 >= 565 and y1 < 750:
+        return ("qty", None, 0)
+
+    # 5. Page-layout based classification
+    for (xmin, xmax) in excluded_cols:
+        if xmin <= cx <= xmax:
+            return "unknown"
+    for (xmin, xmax) in qty_cols:
+        if xmin <= cx <= xmax:
+            return ("qty", None, 0)
+
+    # 6. Default unknown
+    return "unknown"
+
+
 def parse_row(row_spans):
     upc = None
     for x, t in row_spans:
         if COL_UPC[0] <= x < COL_UPC[1] and re.fullmatch(r"\d{12}", t):
             upc = t
             break
-
     descs = []
     for x, t in row_spans:
         if COL_DESC[0] <= x < COL_DESC[1] and not re.fullmatch(r"[\d.]+", t) and t not in {"_____"}:
             descs.append(t)
     description = " ".join(descs).strip() if descs else None
-
     um = None
     for x, t in row_spans:
         if COL_UM[0] <= x < COL_UM[1] and re.fullmatch(r"(EA|CS|CASE|EA\.|PR|PL|BAG|BX|PK|TR)", t, re.IGNORECASE):
             um = t.upper()
             break
-
     list_price = None
     for x, t in row_spans:
         if COL_LIST[0] <= x < COL_LIST[1] and re.fullmatch(r"\d+\.\d{2}", t):
             list_price = float(t)
             break
-
     pct_off = None
     for x, t in row_spans:
         if COL_PCT[0] <= x < COL_PCT[1] and re.fullmatch(r"\d{1,3}%$", t):
             pct_off = int(t.rstrip("%"))
             break
-
     net_price = None
     for x, t in row_spans:
         if COL_NET[0] <= x < COL_NET[1] and re.fullmatch(r"\d+\.\d{2}", t):
             net_price = float(t)
             break
-
     if not upc:
         return None
-
     return {
         "upc": upc,
         "description": description,
@@ -210,7 +260,7 @@ def parse_row(row_spans):
     }
 
 
-def main() -> int:
+def main():
     doc = pymupdf.open(PDF_PATH)
     pages_out = []
     field_type_counts = Counter()
@@ -237,6 +287,8 @@ def main() -> int:
                 data_rows.append((y, parsed))
         data_rows.sort(key=lambda r: r[0])
 
+        page_columns = detect_column_regions(rows) if has_text else ([], [])
+
         widgets_sorted = sorted(
             list(page.widgets() or []),
             key=lambda w: (round(w.rect[1], 1), round(w.rect[0], 1)),
@@ -244,19 +296,23 @@ def main() -> int:
 
         widget_records = []
         for w in widgets_sorted:
-            meta = classify_widget(w.field_name, w.rect)
-            field_type_counts[meta["kind"]] += 1
-            widget_y = round(w.rect[1], 1)
+            classification = classify_widget(w.field_name, w.rect, page_columns)
+            if isinstance(classification, tuple):
+                kind, net_price, occ = classification
+            else:
+                kind, net_price, occ = classification, None, 0
+            field_type_counts[kind] += 1
 
             row_match = None
-            if meta["kind"] == "qty":
+            if kind == "qty":
+                widget_y = round(w.rect[1], 1)
                 best = None
                 for ry, rd in data_rows:
                     if abs(ry - widget_y) <= 6.0:
                         if best is None or abs(ry - widget_y) < abs(best[0] - widget_y):
                             best = (ry, rd)
                 if best is not None and best[1]["net_price"] is not None:
-                    if meta["net_price"] is None or abs(best[1]["net_price"] - meta["net_price"]) < 0.01:
+                    if net_price is None or abs(best[1]["net_price"] - net_price) < 0.01:
                         row_match = best[1]
                         matched_qty += 1
                     else:
@@ -266,10 +322,10 @@ def main() -> int:
 
             widget_records.append({
                 "name": w.field_name,
-                "kind": meta["kind"],
+                "kind": kind,
                 "upc": row_match["upc"] if row_match else None,
-                "net_price": meta["net_price"],
-                "occurrence": meta["occurrence"],
+                "net_price": net_price,
+                "occurrence": occ,
                 "rect": [round(x, 2) for x in w.rect],
                 "row": row_match,
             })
@@ -283,7 +339,7 @@ def main() -> int:
         })
 
     out = {
-        "version": 4,
+        "version": 8,
         "source_pdf": PDF_PATH.name,
         "page_size": [round(doc[0].rect.width, 2), round(doc[0].rect.height, 2)],
         "pages": pages_out,
