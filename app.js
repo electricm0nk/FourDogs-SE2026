@@ -212,7 +212,8 @@ async function restoreFromFiles() {
 // === Boot ===
 async function boot() {
   setSaveState("Loading data…");
-  try {
+  console.log("[boot] start");
+   try {
     const [pdfResp, dataResp] = await Promise.all([
       fetch(PDF_URL, { cache: "force-cache" }),
       fetch(DATA_URL, { cache: "force-cache" }),
