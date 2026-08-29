@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 10,
   "source_pdf": "2026-Trade-Show-Book.pdf",
   "page_size": [
     612.0,
@@ -48763,7 +48763,7 @@
     },
     {
       "index": 119,
-      "vendor": "Fringe Studio",
+      "vendor": null,
       "has_text": false,
       "widget_count": 16,
       "widgets": [
@@ -48995,7 +48995,7 @@
     },
     {
       "index": 120,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 8,
       "widgets": [
@@ -49111,11 +49111,12 @@
           ],
           "row": null
         }
-      ]
+      ],
+      "_bumped": true
     },
     {
       "index": 121,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 43,
       "widgets": [
@@ -49163,7 +49164,7 @@
         },
         {
           "name": "k7P4s",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49191,7 +49192,7 @@
         },
         {
           "name": "R9t3F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49219,7 +49220,7 @@
         },
         {
           "name": "r5F1y",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49247,7 +49248,7 @@
         },
         {
           "name": "y5V8h",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49275,7 +49276,7 @@
         },
         {
           "name": "m8Z7b",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49303,7 +49304,7 @@
         },
         {
           "name": "n9C4x",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49331,7 +49332,7 @@
         },
         {
           "name": "1Hp9V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49359,7 +49360,7 @@
         },
         {
           "name": "j8R1d",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49387,7 +49388,7 @@
         },
         {
           "name": "Q3n8D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49415,7 +49416,7 @@
         },
         {
           "name": "D1y9N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49457,7 +49458,7 @@
         },
         {
           "name": "L3c8V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49485,7 +49486,7 @@
         },
         {
           "name": "p2K9w",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49513,7 +49514,7 @@
         },
         {
           "name": "h5T3x",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49541,7 +49542,7 @@
         },
         {
           "name": "b4R2v",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49569,7 +49570,7 @@
         },
         {
           "name": "x1L5q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49597,7 +49598,7 @@
         },
         {
           "name": "v7H2k",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49625,7 +49626,7 @@
         },
         {
           "name": "w5C2y",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49639,7 +49640,7 @@
         },
         {
           "name": "H7p9V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49725,7 +49726,7 @@
     },
     {
       "index": 122,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 103,
       "widgets": [
@@ -49773,7 +49774,7 @@
         },
         {
           "name": "R3v7L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49801,7 +49802,7 @@
         },
         {
           "name": "2Fz7m",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49829,7 +49830,7 @@
         },
         {
           "name": "8Qp1J",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49857,7 +49858,7 @@
         },
         {
           "name": "y8H2m",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49885,7 +49886,7 @@
         },
         {
           "name": "N7x9L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49913,7 +49914,7 @@
         },
         {
           "name": "c3V1R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49941,7 +49942,7 @@
         },
         {
           "name": "q2B9n",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49969,7 +49970,7 @@
         },
         {
           "name": "F5x3C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -49997,7 +49998,7 @@
         },
         {
           "name": "y6M8F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50025,7 +50026,7 @@
         },
         {
           "name": "9Jr6V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50053,7 +50054,7 @@
         },
         {
           "name": "p7K4D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50081,7 +50082,7 @@
         },
         {
           "name": "M3y5L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50109,7 +50110,7 @@
         },
         {
           "name": "m5R8x",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50137,7 +50138,7 @@
         },
         {
           "name": "C6q4T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50165,7 +50166,7 @@
         },
         {
           "name": "T4b7J",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50179,7 +50180,7 @@
         },
         {
           "name": "K7d1N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50221,7 +50222,7 @@
         },
         {
           "name": "6Nq2h",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50235,7 +50236,7 @@
         },
         {
           "name": "2MZ8h",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50305,7 +50306,7 @@
         },
         {
           "name": "D8x2F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50333,7 +50334,7 @@
         },
         {
           "name": "1Wc6L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50361,7 +50362,7 @@
         },
         {
           "name": "r2J5K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50389,7 +50390,7 @@
         },
         {
           "name": "p9J2r",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50417,7 +50418,7 @@
         },
         {
           "name": "y9F4b",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50445,7 +50446,7 @@
         },
         {
           "name": "t8R2d",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50473,7 +50474,7 @@
         },
         {
           "name": "p5H2M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50501,7 +50502,7 @@
         },
         {
           "name": "3Ck6W",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50543,7 +50544,7 @@
         },
         {
           "name": "H8p5T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50571,7 +50572,7 @@
         },
         {
           "name": "w2L7F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50599,7 +50600,7 @@
         },
         {
           "name": "b5N8c",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50627,7 +50628,7 @@
         },
         {
           "name": "4Yt2D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50655,7 +50656,7 @@
         },
         {
           "name": "C3q5V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50711,7 +50712,7 @@
         },
         {
           "name": "2Jr6K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50767,7 +50768,7 @@
         },
         {
           "name": "L5d3Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50823,7 +50824,7 @@
         },
         {
           "name": "7Hc1T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50879,7 +50880,7 @@
         },
         {
           "name": "n9K5F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50907,7 +50908,7 @@
         },
         {
           "name": "q4T1x",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50935,7 +50936,7 @@
         },
         {
           "name": "w1Z8m",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50963,7 +50964,7 @@
         },
         {
           "name": "V9x6C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -50991,7 +50992,7 @@
         },
         {
           "name": "j7Q1k",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51019,7 +51020,7 @@
         },
         {
           "name": "c6Y5n",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51033,7 +51034,7 @@
         },
         {
           "name": "F1k7R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51061,7 +51062,7 @@
         },
         {
           "name": "7Jm1L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51075,7 +51076,7 @@
         },
         {
           "name": "2Kp6F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51089,7 +51090,7 @@
         },
         {
           "name": "s5R3T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51103,7 +51104,7 @@
         },
         {
           "name": "N1y8q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51117,7 +51118,7 @@
         },
         {
           "name": "4Md7W",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51175,7 +51176,7 @@
     },
     {
       "index": 123,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 118,
       "widgets": [
@@ -51209,7 +51210,7 @@
         },
         {
           "name": "FROMMM1.0.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51251,7 +51252,7 @@
         },
         {
           "name": "FROMMM1.1.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51279,7 +51280,7 @@
         },
         {
           "name": "FROMMM1.2.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51307,7 +51308,7 @@
         },
         {
           "name": "FROMMM1.3.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51335,7 +51336,7 @@
         },
         {
           "name": "FROMMM1.4.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51363,7 +51364,7 @@
         },
         {
           "name": "dogfood32.0",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51391,7 +51392,7 @@
         },
         {
           "name": "FROMMM1.5.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51419,7 +51420,7 @@
         },
         {
           "name": "dogfood33",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51447,7 +51448,7 @@
         },
         {
           "name": "FROMMM1.6.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51475,7 +51476,7 @@
         },
         {
           "name": "dogfood34",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51503,7 +51504,7 @@
         },
         {
           "name": "FROMMM1.7.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51531,7 +51532,7 @@
         },
         {
           "name": "dogfood35",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51559,7 +51560,7 @@
         },
         {
           "name": "FROMMM1.8.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51587,7 +51588,7 @@
         },
         {
           "name": "dogfood36",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51615,7 +51616,7 @@
         },
         {
           "name": "FROMMM1.9.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51643,7 +51644,7 @@
         },
         {
           "name": "dogfood37",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51671,7 +51672,7 @@
         },
         {
           "name": "FROMMM1.10.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51699,7 +51700,7 @@
         },
         {
           "name": "dogfood38",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51741,7 +51742,7 @@
         },
         {
           "name": "FROMMM1.11.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51755,7 +51756,7 @@
         },
         {
           "name": "dogfood39",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51783,7 +51784,7 @@
         },
         {
           "name": "FROMMM1.12.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51811,7 +51812,7 @@
         },
         {
           "name": "dogfood40",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51853,7 +51854,7 @@
         },
         {
           "name": "FROMMM1.13.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51867,7 +51868,7 @@
         },
         {
           "name": "dogfood41",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51909,7 +51910,7 @@
         },
         {
           "name": "FROMMM1.14.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51923,7 +51924,7 @@
         },
         {
           "name": "dogfood42",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51951,7 +51952,7 @@
         },
         {
           "name": "dogfood43",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -51979,7 +51980,7 @@
         },
         {
           "name": "FROMMM1.15.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52007,7 +52008,7 @@
         },
         {
           "name": "dogfood44",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52035,7 +52036,7 @@
         },
         {
           "name": "FROMMM1.16.1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52063,7 +52064,7 @@
         },
         {
           "name": "Text55",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52091,7 +52092,7 @@
         },
         {
           "name": "n5F7D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52119,7 +52120,7 @@
         },
         {
           "name": "Text54",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52161,7 +52162,7 @@
         },
         {
           "name": "Text53",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52189,7 +52190,7 @@
         },
         {
           "name": "Text52",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52217,7 +52218,7 @@
         },
         {
           "name": "M6x3T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52245,7 +52246,7 @@
         },
         {
           "name": "DOGFOOD1",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52273,7 +52274,7 @@
         },
         {
           "name": "DOGFOOD2",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52287,7 +52288,7 @@
         },
         {
           "name": "DOGFOOD3",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52329,7 +52330,7 @@
         },
         {
           "name": "DOGFOOD4",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52357,7 +52358,7 @@
         },
         {
           "name": "DOGFOOD5",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52371,7 +52372,7 @@
         },
         {
           "name": "DOGFOOD6",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52413,7 +52414,7 @@
         },
         {
           "name": "DOGFOOD7",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52427,7 +52428,7 @@
         },
         {
           "name": "DOGFOOD8",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52469,7 +52470,7 @@
         },
         {
           "name": "DOGFOOD9",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52497,7 +52498,7 @@
         },
         {
           "name": "DOGFOOD10",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52525,7 +52526,7 @@
         },
         {
           "name": "DOGFOOD11",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52553,7 +52554,7 @@
         },
         {
           "name": "DOGFOOD12",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52581,7 +52582,7 @@
         },
         {
           "name": "DOGFOOD13",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52609,7 +52610,7 @@
         },
         {
           "name": "DOGFOOD14",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52637,7 +52638,7 @@
         },
         {
           "name": "DOGFOOD15",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52665,7 +52666,7 @@
         },
         {
           "name": "DOGFOOD16",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52693,7 +52694,7 @@
         },
         {
           "name": "y1P7N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52721,7 +52722,7 @@
         },
         {
           "name": "p4R6C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52749,7 +52750,7 @@
         },
         {
           "name": "D8m2V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52777,7 +52778,7 @@
         },
         {
           "name": "q7N5T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52835,7 +52836,7 @@
     },
     {
       "index": 124,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 95,
       "widgets": [
@@ -52883,7 +52884,7 @@
         },
         {
           "name": "c6H1T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52911,7 +52912,7 @@
         },
         {
           "name": "r7N2H",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52939,7 +52940,7 @@
         },
         {
           "name": "r3N7Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52967,7 +52968,7 @@
         },
         {
           "name": "w9B4M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -52995,7 +52996,7 @@
         },
         {
           "name": "F6x4V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53023,7 +53024,7 @@
         },
         {
           "name": "6Fv1P",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53051,7 +53052,7 @@
         },
         {
           "name": "w7D5R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53079,7 +53080,7 @@
         },
         {
           "name": "N8q5X",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53107,7 +53108,7 @@
         },
         {
           "name": "y9P2F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53135,7 +53136,7 @@
         },
         {
           "name": "y6H3L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53163,7 +53164,7 @@
         },
         {
           "name": "v5J1X",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53191,7 +53192,7 @@
         },
         {
           "name": "8Jp2M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53219,7 +53220,7 @@
         },
         {
           "name": "6Rr9B",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53247,7 +53248,7 @@
         },
         {
           "name": "D3x6Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53275,7 +53276,7 @@
         },
         {
           "name": "8Hq5C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53303,7 +53304,7 @@
         },
         {
           "name": "2Lk8T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53331,7 +53332,7 @@
         },
         {
           "name": "T7x2M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53359,7 +53360,7 @@
         },
         {
           "name": "q9P3H",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53387,7 +53388,7 @@
         },
         {
           "name": "3Lw8V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53415,7 +53416,7 @@
         },
         {
           "name": "w8N2K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53443,7 +53444,7 @@
         },
         {
           "name": "D2c6X",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53471,7 +53472,7 @@
         },
         {
           "name": "R4y9F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53499,7 +53500,7 @@
         },
         {
           "name": "4Pq9F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53527,7 +53528,7 @@
         },
         {
           "name": "7Qp1C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53555,7 +53556,7 @@
         },
         {
           "name": "D9k2R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53569,7 +53570,7 @@
         },
         {
           "name": "m6T2P",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53611,7 +53612,7 @@
         },
         {
           "name": "4Kq3F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53653,7 +53654,7 @@
         },
         {
           "name": "6Dq4L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53681,7 +53682,7 @@
         },
         {
           "name": "H2n7F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53709,7 +53710,7 @@
         },
         {
           "name": "9Lm6R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53737,7 +53738,7 @@
         },
         {
           "name": "Q7y2M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53765,7 +53766,7 @@
         },
         {
           "name": "t6F3J",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53793,7 +53794,7 @@
         },
         {
           "name": "m5W7P",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53821,7 +53822,7 @@
         },
         {
           "name": "R3c9F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53849,7 +53850,7 @@
         },
         {
           "name": "7Tj1M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53877,7 +53878,7 @@
         },
         {
           "name": "D4p2X",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53905,7 +53906,7 @@
         },
         {
           "name": "1Lw7R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53933,7 +53934,7 @@
         },
         {
           "name": "q3J6N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53961,7 +53962,7 @@
         },
         {
           "name": "v9P4K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -53989,7 +53990,7 @@
         },
         {
           "name": "6Rk7B",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54017,7 +54018,7 @@
         },
         {
           "name": "C4q9V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54045,7 +54046,7 @@
         },
         {
           "name": "2Hj6X",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54073,7 +54074,7 @@
         },
         {
           "name": "p7F1R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54101,7 +54102,7 @@
         },
         {
           "name": "Q8n4C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54173,7 +54174,7 @@
     },
     {
       "index": 125,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 15,
       "widgets": [
@@ -54277,7 +54278,7 @@
         },
         {
           "name": "b2J9W",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54375,7 +54376,7 @@
         },
         {
           "name": "r8F3C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54391,7 +54392,7 @@
     },
     {
       "index": 126,
-      "vendor": "F3856SP",
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 74,
       "widgets": [
@@ -54439,7 +54440,7 @@
         },
         {
           "name": "2Cj9F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54467,7 +54468,7 @@
         },
         {
           "name": "T1x7F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54495,7 +54496,7 @@
         },
         {
           "name": "q3W1M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54523,7 +54524,7 @@
         },
         {
           "name": "4Nw2D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54551,7 +54552,7 @@
         },
         {
           "name": "y9F2C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54579,7 +54580,7 @@
         },
         {
           "name": "R5q1T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54607,7 +54608,7 @@
         },
         {
           "name": "2Lz9C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54635,7 +54636,7 @@
         },
         {
           "name": "L1m5V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54663,7 +54664,7 @@
         },
         {
           "name": "6Hn9K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54691,7 +54692,7 @@
         },
         {
           "name": "Q2v8P",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54719,7 +54720,7 @@
         },
         {
           "name": "M7c1F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54747,7 +54748,7 @@
         },
         {
           "name": "F7q6V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54775,7 +54776,7 @@
         },
         {
           "name": "3Vj6L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54803,7 +54804,7 @@
         },
         {
           "name": "1Bz5M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54831,7 +54832,7 @@
         },
         {
           "name": "L8n3C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54859,7 +54860,7 @@
         },
         {
           "name": "T4k7C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54887,7 +54888,7 @@
         },
         {
           "name": "T6h4Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54915,7 +54916,7 @@
         },
         {
           "name": "Q6p3V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54943,7 +54944,7 @@
         },
         {
           "name": "3Mky8L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54971,7 +54972,7 @@
         },
         {
           "name": "y2L7K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -54999,7 +55000,7 @@
         },
         {
           "name": "7Cq6T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55027,7 +55028,7 @@
         },
         {
           "name": "c3N6P",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55055,7 +55056,7 @@
         },
         {
           "name": "v7F2M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55083,7 +55084,7 @@
         },
         {
           "name": "b4W1N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55097,7 +55098,7 @@
         },
         {
           "name": "w9C4T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55139,7 +55140,7 @@
         },
         {
           "name": "m9J5V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55167,7 +55168,7 @@
         },
         {
           "name": "R1n8F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55195,7 +55196,7 @@
         },
         {
           "name": "7Yk2L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55223,7 +55224,7 @@
         },
         {
           "name": "Q3r6N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55251,7 +55252,7 @@
         },
         {
           "name": "D4V7C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55279,7 +55280,7 @@
         },
         {
           "name": "6Hq5R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55307,7 +55308,7 @@
         },
         {
           "name": "y6R2F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55435,7 +55436,7 @@
     },
     {
       "index": 127,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 76,
       "widgets": [
@@ -55483,7 +55484,7 @@
         },
         {
           "name": "c5L7X",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55511,7 +55512,7 @@
         },
         {
           "name": "8Hq2R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55539,7 +55540,7 @@
         },
         {
           "name": "r8N2C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55567,7 +55568,7 @@
         },
         {
           "name": "1Lx6N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55595,7 +55596,7 @@
         },
         {
           "name": "m3Q7F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55623,7 +55624,7 @@
         },
         {
           "name": "R4k8M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55651,7 +55652,7 @@
         },
         {
           "name": "w9D2P",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55679,7 +55680,7 @@
         },
         {
           "name": "2Qn5V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55707,7 +55708,7 @@
         },
         {
           "name": "b4C1M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55735,7 +55736,7 @@
         },
         {
           "name": "F8m3X",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55763,7 +55764,7 @@
         },
         {
           "name": "p2F9N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55791,7 +55792,7 @@
         },
         {
           "name": "p4N2K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55819,7 +55820,7 @@
         },
         {
           "name": "y6R1C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55847,7 +55848,7 @@
         },
         {
           "name": "y1H6D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55875,7 +55876,7 @@
         },
         {
           "name": "3Kx9T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55903,7 +55904,7 @@
         },
         {
           "name": "b9X4C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55931,7 +55932,7 @@
         },
         {
           "name": "L8p6M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55959,7 +55960,7 @@
         },
         {
           "name": "n8K1V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -55987,7 +55988,7 @@
         },
         {
           "name": "w5H3N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56015,7 +56016,7 @@
         },
         {
           "name": "4Fv3M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56043,7 +56044,7 @@
         },
         {
           "name": "F2m8C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56071,7 +56072,7 @@
         },
         {
           "name": "x5N8Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56127,7 +56128,7 @@
         },
         {
           "name": "V9m4D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56155,7 +56156,7 @@
         },
         {
           "name": "r7D5V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56183,7 +56184,7 @@
         },
         {
           "name": "8Hn5R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56211,7 +56212,7 @@
         },
         {
           "name": "x3K6P",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56239,7 +56240,7 @@
         },
         {
           "name": "L7q1C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56267,7 +56268,7 @@
         },
         {
           "name": "b5R7T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56295,7 +56296,7 @@
         },
         {
           "name": "m5D8T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56323,7 +56324,7 @@
         },
         {
           "name": "Q9n6L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56351,7 +56352,7 @@
         },
         {
           "name": "y3F7M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56365,7 +56366,7 @@
         },
         {
           "name": "Q3v7F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56507,7 +56508,7 @@
     },
     {
       "index": 128,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 10,
       "widgets": [
@@ -56655,7 +56656,7 @@
     },
     {
       "index": 129,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 72,
       "widgets": [
@@ -56689,7 +56690,7 @@
         },
         {
           "name": "2Rj7X",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56717,7 +56718,7 @@
         },
         {
           "name": "c6H9V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56745,7 +56746,7 @@
         },
         {
           "name": "w3N1K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56773,7 +56774,7 @@
         },
         {
           "name": "Q5b8M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56801,7 +56802,7 @@
         },
         {
           "name": "4Lq2F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56829,7 +56830,7 @@
         },
         {
           "name": "y7T9C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56857,7 +56858,7 @@
         },
         {
           "name": "V1x6R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56885,7 +56886,7 @@
         },
         {
           "name": "8Dk3N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56913,7 +56914,7 @@
         },
         {
           "name": "p9M5H",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56941,7 +56942,7 @@
         },
         {
           "name": "F2v7L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56969,7 +56970,7 @@
         },
         {
           "name": "r4C8Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -56997,7 +56998,7 @@
         },
         {
           "name": "6Nw1T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57025,7 +57026,7 @@
         },
         {
           "name": "p7D4K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57067,7 +57068,7 @@
         },
         {
           "name": "D2w4M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57095,7 +57096,7 @@
         },
         {
           "name": "3Fv9N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57123,7 +57124,7 @@
         },
         {
           "name": "x5H2C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57151,7 +57152,7 @@
         },
         {
           "name": "p1Q4V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57179,7 +57180,7 @@
         },
         {
           "name": "r3K5M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57207,7 +57208,7 @@
         },
         {
           "name": "4Wq8L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57235,7 +57236,7 @@
         },
         {
           "name": "m6P3N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57263,7 +57264,7 @@
         },
         {
           "name": "V5n8C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57291,7 +57292,7 @@
         },
         {
           "name": "c5V8L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57333,7 +57334,7 @@
         },
         {
           "name": "T9x6Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57361,7 +57362,7 @@
         },
         {
           "name": "Q2p8V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57389,7 +57390,7 @@
         },
         {
           "name": "7Kq5D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57417,7 +57418,7 @@
         },
         {
           "name": "y2F7T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57459,7 +57460,7 @@
         },
         {
           "name": "1Fv8L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57487,7 +57488,7 @@
         },
         {
           "name": "D7x2P",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57515,7 +57516,7 @@
         },
         {
           "name": "4Ck1Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57543,7 +57544,7 @@
         },
         {
           "name": "1Pj6R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57671,13 +57672,13 @@
     },
     {
       "index": 130,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 19,
       "widgets": [
         {
           "name": "y4T1N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57691,7 +57692,7 @@
         },
         {
           "name": "p1F5C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57705,7 +57706,7 @@
         },
         {
           "name": "C6v9M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57719,7 +57720,7 @@
         },
         {
           "name": "4Lq7M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57733,7 +57734,7 @@
         },
         {
           "name": "b5P7F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57747,7 +57748,7 @@
         },
         {
           "name": "w9K2V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57761,7 +57762,7 @@
         },
         {
           "name": "Q1x8R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57775,7 +57776,7 @@
         },
         {
           "name": "3Hn6D",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57887,7 +57888,7 @@
         },
         {
           "name": "r7B1C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -57945,7 +57946,7 @@
     },
     {
       "index": 131,
-      "vendor": "F4058",
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 11,
       "widgets": [
@@ -58107,7 +58108,7 @@
     },
     {
       "index": 132,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 43,
       "widgets": [
@@ -58127,7 +58128,7 @@
         },
         {
           "name": "7Kx4V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58155,7 +58156,7 @@
         },
         {
           "name": "p8F3L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58183,7 +58184,7 @@
         },
         {
           "name": "D1m6Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58211,7 +58212,7 @@
         },
         {
           "name": "y9C2N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58239,7 +58240,7 @@
         },
         {
           "name": "4Rj7T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58267,7 +58268,7 @@
         },
         {
           "name": "V5n1K",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58295,7 +58296,7 @@
         },
         {
           "name": "x6L8M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58323,7 +58324,7 @@
         },
         {
           "name": "c3Q9F",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58351,7 +58352,7 @@
         },
         {
           "name": "w7H2R",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58379,7 +58380,7 @@
         },
         {
           "name": "1Pq5V",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58407,7 +58408,7 @@
         },
         {
           "name": "m4D8C",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58435,7 +58436,7 @@
         },
         {
           "name": "T9k6N",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58463,7 +58464,7 @@
         },
         {
           "name": "b5F1L",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58491,7 +58492,7 @@
         },
         {
           "name": "2Xv7M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58519,7 +58520,7 @@
         },
         {
           "name": "R3n8Q",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58547,7 +58548,7 @@
         },
         {
           "name": "6Cj4T",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58575,7 +58576,7 @@
         },
         {
           "name": "n4D8M",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -58717,7 +58718,7 @@
     },
     {
       "index": 133,
-      "vendor": "F4057",
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 11,
       "widgets": [
@@ -58879,7 +58880,7 @@
     },
     {
       "index": 134,
-      "vendor": null,
+      "vendor": "Fromm",
       "has_text": true,
       "widget_count": 93,
       "widgets": [
@@ -60089,7 +60090,7 @@
         },
         {
           "name": "Q1R2S3",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -60117,7 +60118,7 @@
         },
         {
           "name": "W7X8Y9",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -60131,7 +60132,7 @@
         },
         {
           "name": "Z1A2C3",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
@@ -60173,7 +60174,7 @@
         },
         {
           "name": "L1M2N3",
-          "kind": "unknown",
+          "kind": "qty",
           "upc": null,
           "net_price": null,
           "occurrence": 0,
