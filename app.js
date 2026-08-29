@@ -432,6 +432,7 @@ async function renderPageBlock(pageData) {
     const pdfPage = await state.pdfjsDoc.getPage(pageData.index);
     const scale = 1.5;
     const viewport = pdfPage.getViewport({ scale });
+    const canvas = document.createElement("canvas");
     canvas.width = viewport.width;
     canvas.height = viewport.height;
     // Maintain aspect ratio via CSS. Overlays use % so they scale with the wrap.
