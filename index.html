@@ -193,18 +193,19 @@
   #masterPanel.master-page .mp-items-table { font-size: 14px; }
 
   #masterPanel.master-page { background: var(--panel); }
-  #masterInstructions {
-    padding: 0;
-    margin: -4px 0 16px;
-    border: 0;
-    background: transparent;
+  #masterInstructions.instructions-link {
+    padding: 6px 12px;
+    margin: 0 0 16px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    background: var(--accent-soft);
     color: var(--accent);
     font: inherit;
     font-size: 14px;
     font-weight: 700;
-    text-decoration: underline;
     cursor: pointer;
   }
+  #masterInstructions.instructions-link:hover { filter: brightness(1.05); }
   .instructions-modal { max-width: 620px; }
   .instructions-modal ol { padding-left: 22px; line-height: 1.5; }
   .instructions-modal li { margin: 8px 0; }
@@ -353,8 +354,21 @@
     cursor: pointer;
   }
   .fromm-checkbox-overlay:checked {
-    background: #0a4ec9;
-    box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px #0a4ec9;
+    background: rgba(255, 235, 59, 0.6);
+    border-color: #b8860b;
+  }
+  .fromm-checkbox-overlay:checked::after {
+    content: "✕";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b8000a;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 900;
+    line-height: 1;
+    pointer-events: none;
   }
   .fromm-checkbox-overlay:focus {
     outline: 2px solid var(--accent);
@@ -510,7 +524,7 @@
 <template id="masterPanelTemplate">
   <section id="masterPanel" class="master-page">
     <h2 class="mp-vendor-title">Master Order Summary</h2>
-    <button type="button" id="masterInstructions">Instructions</button>
+    <div><button type="button" class="instructions-link" id="masterInstructions">How to use this app</button></div>
     <table class="mp-table">
       <thead><tr><th>Vendor</th><th class="mp-num">Subtotal</th><th title="Hide from sidebar">Hide</th></tr></thead>
       <tbody id="m-table-body"></tbody>
