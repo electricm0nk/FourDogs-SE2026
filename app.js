@@ -514,7 +514,6 @@ function overlayWidgets(wrap, pageData, viewport) {
         input.classList.add("has-value");
       }
       scheduleSave();
-      console.log("qty handler fired");
       recomputeTotals();
       updateVendorNavIndicators();
     });
@@ -562,9 +561,7 @@ function computeVendorSubtotals() {
 }
 
 function recomputeTotals() {
-  if (typeof window._rc === "undefined") window._rc = 0;
-  window._rc++;
-  if (window._rc > 5) console.warn("recompute #" + window._rc);
+
   const subtotal = computeSubtotal();
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
@@ -577,7 +574,7 @@ function recomputeTotals() {
   renderMasterTable();
   renderItemsTable();
 }
-let _rmt = 0; function renderMasterTable() { _rmt++; if (_rmt > 10) console.warn("renderMT call " + _rmt);
+function renderMasterTable() {
   const tbody = $("#m-table-body");
   if (!tbody) return;
   const map = vendorPages();
