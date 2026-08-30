@@ -4,7 +4,7 @@
 import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs";
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs";
 
-const { PDFDocument } = window.PDFLib;
+const { PDFDocument, rgb } = window.PDFLib;
 
 const PDF_URL = "assets/2026-Trade-Show-Book.pdf";
 const DATA_URL = "data/data.json";
@@ -546,7 +546,7 @@ function addFrommControl(wrap, pageData, widget, pageW, pageH) {
     wrap.appendChild(checkbox);
     return;
   }
-  if (widget.field_type !== "Text") return;
+  if (widget.field_type !== "Text" && widget.field_type !== "Signature") return;
 
   const input = document.createElement("input");
   input.type = "text";
@@ -570,7 +570,7 @@ function overlayWidgets(wrap, pageData) {
   const pageW = state.data.page_size[0];
   const pageH = state.data.page_size[1];
   for (const w of pageData.widgets || []) {
-    if (pageData.vendor === "Fromm" && w.kind !== "qty") {
+    if (pageData.vendor === "Fromm" && (w.kind !== "qty" || w.field_type === "Signature")) {
       addFrommControl(wrap, pageData, w, pageW, pageH);
       continue;
     }
@@ -948,7 +948,7 @@ async function doExport() {
     const fieldsByName = new Map(allFields.map((field) => [field.getName(), field]));
     for (const [key, value] of Object.entries(state.textFields)) {
       if (!value) continue;
-      const widgetName = key.slice(key.indexOf("|") + 1);
+      const [pageIndex, widgetName] = key.split("|");
       const field = fieldsByName.get(widgetName);
       if (field && typeof field.setText === "function") {
         try {
@@ -956,6 +956,18 @@ async function doExport() {
         } catch (e) {
           console.warn("set text failed", widgetName, e);
         }
+        continue;
+      }
+      const widget = state.data.pages[Number(pageIndex) - 1]?.widgets.find((w) => w.name === widgetName);
+      if (widget?.field_type === "Signature") {
+        const page = pdfDoc.getPages()[Number(pageIndex) - 1];
+        const height = widget.rect[3] - widget.rect[1];
+        page.drawText(value, {
+          x: widget.rect[0] + 2,
+          y: state.data.page_size[1] - widget.rect[3] + 2,
+          size: Math.max(6, Math.min(10, height - 2)),
+          color: rgb(0, 0, 0),
+        });
       }
     }
     for (const key of Object.keys(state.checkboxFields)) {
