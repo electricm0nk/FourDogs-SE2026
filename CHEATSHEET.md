@@ -12,10 +12,10 @@
 
 ## Filling an order
 
-- Tap a vendor in the left sidebar to jump to their pages.
+- Tap **Master** in the left sidebar to enter your **Store name** and **City / State**, review subtotals, and edit entered items.
+- Tap a vendor in the left sidebar to jump to its sheets.
 - Scroll to see all of that vendor's deals.
-- Tap any yellow box, type a quantity. Subtotal updates instantly.
-- Top of page: enter your **Store name**, **City**, **Rep name**. Saves automatically.
+- Tap any yellow qty or note box to enter information. Subtotal updates instantly.
 - "Saved ✓ to filename.json" in the top-right means your work is safe — both locally AND in iCloud.
 
 ## Submitting

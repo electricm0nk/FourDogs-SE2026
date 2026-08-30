@@ -21,7 +21,7 @@ const state = window._state = {
   currentVendor: null,
   order: {}, // key "page|widget" -> qty string
   vendorMeta: {}, // vendorName -> { notes }
-  buyer: { storeName: "", city: "", rep: "", email: "", phone: "" },
+  buyer: { storeName: "", city: "" },
   master: { hiddenVendors: {} }, // vendorName -> bool (true = hidden in sidebar)
   filesHandle: null, // FileSystemFileHandle for iPad Safari auto-save
   filesHandleName: null,
@@ -64,7 +64,8 @@ function loadOrder() {
     if (parsed.version === SCHEMA_VERSION) {
       state.order = parsed.order || {};
       state.vendorMeta = parsed.vendorMeta || {};
-      Object.assign(state.buyer, parsed.buyer || {});
+      state.buyer.storeName = parsed.buyer?.storeName || "";
+      state.buyer.city = parsed.buyer?.city || "";
       state.master = parsed.master || { hiddenVendors: {} };
       if (!state.master.hiddenVendors) state.master.hiddenVendors = {};
     }
@@ -345,19 +346,17 @@ function renderBuyerHeader() {
     '<div>' +
       '<label>City / State</label>' +
       '<input id="bh-city" placeholder="Atlanta, GA" value="' + escapeAttr(state.buyer.city) + '" />' +
-    '</div>' +
-    '<div>' +
-      '<label>Rep name</label>' +
-      '<input id="bh-rep" placeholder="Jane Doe" value="' + escapeAttr(state.buyer.rep) + '" />' +
-    '</div>' +
-    '<div>' +
-      '<label>Email / phone (optional)</label>' +
-      '<input id="bh-contact" placeholder="jane@store.com" value="' + escapeAttr(state.buyer.email) + '" />' +
     '</div>';
-  div.querySelector("#bh-store").addEventListener("input", (e) => { state.buyer.storeName = e.target.value; scheduleSave(); recomputeTotals(); });
-  div.querySelector("#bh-city").addEventListener("input", (e) => { state.buyer.city = e.target.value; scheduleSave(); });
-  div.querySelector("#bh-rep").addEventListener("input", (e) => { state.buyer.rep = e.target.value; scheduleSave(); });
-  div.querySelector("#bh-contact").addEventListener("input", (e) => { state.buyer.email = e.target.value; scheduleSave(); });
+  div.querySelector("#bh-store").addEventListener("input", (e) => {
+    state.buyer.storeName = e.target.value;
+    updateBuyerOverlays();
+    scheduleSave();
+  });
+  div.querySelector("#bh-city").addEventListener("input", (e) => {
+    state.buyer.city = e.target.value;
+    updateBuyerOverlays();
+    scheduleSave();
+  });
   m.insertBefore(div, m.firstChild);
 }
 
@@ -402,32 +401,14 @@ function renderVendorView(vendor) {
   const map = vendorPages();
   const pages = map[vendor] || [];
 
-  // vendor meta header
-  const meta = state.vendorMeta[vendor] || { notes: "", noteLeft: "", noteRight: "" };
   const head = document.createElement("div");
   head.className = "vendor-header";
-  const notePair = document.createElement("div");
-  notePair.className = vendor === "Fromm" ? "vendor-notes-pair single" : "vendor-notes-pair";
-  notePair.innerHTML =
-    '<textarea id="vnote-left" class="vendor-note-box" placeholder="L">' + escapeHtml(meta.noteLeft || "") + '</textarea>' +
-    '<textarea id="vnote-right" class="vendor-note-box" placeholder="R">' + escapeHtml(meta.noteRight || "") + '</textarea>';
-  head.appendChild(notePair);
   const titleRow = document.createElement("div");
   titleRow.className = "vendor-title-row";
   titleRow.innerHTML =
     "<h2>" + escapeHtml(vendor) + "</h2>" +
     '<div class="pages">' + pages.length + " page" + (pages.length !== 1 ? "s" : "") + "</div>";
   head.appendChild(titleRow);
-  head.querySelector("#vnote-left").addEventListener("input", (e) => {
-    if (!state.vendorMeta[vendor]) state.vendorMeta[vendor] = { notes: "", noteLeft: "", noteRight: "" };
-    state.vendorMeta[vendor].noteLeft = e.target.value;
-    scheduleSave();
-  });
-  head.querySelector("#vnote-right").addEventListener("input", (e) => {
-    if (!state.vendorMeta[vendor]) state.vendorMeta[vendor] = { notes: "", noteLeft: "", noteRight: "" };
-    state.vendorMeta[vendor].noteRight = e.target.value;
-    scheduleSave();
-  });
   main.appendChild(head);
 
   // placeholder area for pages
@@ -487,34 +468,84 @@ async function renderPageBlock(pageData) {
   return block;
 }
 
-function overlayWidgets(wrap, pageData, viewport) {
-  if (!pageData.widgets || pageData.widgets.length === 0) return;
+function positionOverlay(el, rect, pageW, pageH) {
+  const [x0, y0, x1, y1] = rect;
+  el.style.left = (x0 / pageW) * 100 + "%";
+  el.style.top = (y0 / pageH) * 100 + "%";
+  el.style.width = ((x1 - x0) / pageW) * 100 + "%";
+  el.style.height = ((y1 - y0) / pageH) * 100 + "%";
+}
+
+function buyerLine() {
+  return [state.buyer.storeName, state.buyer.city].filter(Boolean).join(" — ");
+}
+
+function updateBuyerOverlays() {
+  const value = buyerLine();
+  $$(".buyer-overlay").forEach((input) => {
+    input.value = value;
+  });
+}
+
+function setVendorNote(vendor, side, value, source) {
+  if (!state.vendorMeta[vendor]) state.vendorMeta[vendor] = { notes: "", noteLeft: "", noteRight: "" };
+  state.vendorMeta[vendor][side === "left" ? "noteLeft" : "noteRight"] = value;
+  $$(".vendor-note-overlay").forEach((note) => {
+    if (note !== source && note.dataset.vendor === vendor && note.dataset.side === side) {
+      note.value = value;
+    }
+  });
+  scheduleSave();
+}
+
+function addVendorNoteOverlays(wrap, pageData, pageW, pageH) {
+  const vendor = pageData.vendor || "Other";
+  const meta = state.vendorMeta[vendor] || {};
+  const noteRects = vendor === "Fromm"
+    ? [{ side: "left", rect: [12, 18, pageW - 12, 54] }]
+    : [
+        { side: "left", rect: [12, 18, pageW / 2 - 6, 54] },
+        { side: "right", rect: [pageW / 2 + 6, 18, pageW - 12, 54] },
+      ];
+  for (const { side, rect } of noteRects) {
+    const note = document.createElement("textarea");
+    note.className = "vendor-note-overlay";
+    note.placeholder = side === "left" ? "Left note" : "Right note";
+    note.value = side === "left" ? (meta.noteLeft || "") : (meta.noteRight || "");
+    note.dataset.vendor = vendor;
+    note.dataset.side = side;
+    note.setAttribute("aria-label", vendor + " " + side + " note");
+    positionOverlay(note, rect, pageW, pageH);
+    note.addEventListener("input", () => setVendorNote(vendor, side, note.value, note));
+    wrap.appendChild(note);
+  }
+}
+
+function overlayWidgets(wrap, pageData) {
   const pageW = state.data.page_size[0];
   const pageH = state.data.page_size[1];
-  for (const w of pageData.widgets) {
+  for (const w of pageData.widgets || []) {
+    if (w.kind === "store_name") {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.readOnly = true;
+      input.className = "buyer-overlay";
+      input.value = buyerLine();
+      input.placeholder = "Store name — City / State";
+      input.setAttribute("aria-label", "Store name and city or state");
+      positionOverlay(input, w.rect, pageW, pageH);
+      wrap.appendChild(input);
+      continue;
+    }
     if (w.kind !== "qty") continue;
-    const [x0, y0, x1, y1] = w.rect;
+
     const input = document.createElement("input");
     input.type = "number";
     input.inputMode = "numeric";
     input.className = "qty-overlay";
     input.min = "0";
     input.step = "1";
-    // Use percentages so overlay stays aligned when the wrap shrinks
-    // to fit its container. PDF coords (0..pageW, 0..pageH with origin
-    // bottom-left) map to % directly.
-    // PDF.js renders with origin at top-left using PDF spec Y values
-    // directly (no flip). So PDF y=178 (first table first row) maps to
-    // screen y=178 which is the upper portion of the rendered page.
-    // Use y0 directly as the top edge.
-    const leftPct = (x0 / pageW) * 100;
-    const topPct = (y0 / pageH) * 100;
-    const wPct = ((x1 - x0) / pageW) * 100;
-    const hPct = ((y1 - y0) / pageH) * 100;
-    input.style.left = leftPct + "%";
-    input.style.top = topPct + "%";
-    input.style.width = wPct + "%";
-    input.style.height = hPct + "%";
+    positionOverlay(input, w.rect, pageW, pageH);
     input.dataset.page = pageData.index;
     input.dataset.widget = w.name;
     const key = pageData.index + "|" + w.name;
@@ -538,6 +569,7 @@ function overlayWidgets(wrap, pageData, viewport) {
     });
     wrap.appendChild(input);
   }
+  addVendorNoteOverlays(wrap, pageData, pageW, pageH);
 }
 
 // === Totals ===
