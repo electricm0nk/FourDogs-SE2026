@@ -245,6 +245,7 @@ async function boot() {
 
   setupMasterPanel();
   renderMasterTable();
+  renderItemsTable();
   buildVendorList();
 
   const map = vendorPages();
@@ -383,17 +384,29 @@ function renderVendorView(vendor) {
   const pages = map[vendor] || [];
 
   // vendor meta header
-  const meta = state.vendorMeta[vendor] || { notes: "" };
+  const meta = state.vendorMeta[vendor] || { notes: "", noteLeft: "", noteRight: "" };
   const head = document.createElement("div");
   head.className = "vendor-header";
-  head.innerHTML =
+  const notePair = document.createElement("div");
+  notePair.className = vendor === "Fromm" ? "vendor-notes-pair single" : "vendor-notes-pair";
+  notePair.innerHTML =
+    '<textarea id="vnote-left" class="vendor-note-box" placeholder="L">' + escapeHtml(meta.noteLeft || "") + '</textarea>' +
+    '<textarea id="vnote-right" class="vendor-note-box" placeholder="R">' + escapeHtml(meta.noteRight || "") + '</textarea>';
+  head.appendChild(notePair);
+  const titleRow = document.createElement("div");
+  titleRow.className = "vendor-title-row";
+  titleRow.innerHTML =
     "<h2>" + escapeHtml(vendor) + "</h2>" +
-    '<div class="pages">' + pages.length + " page" + (pages.length !== 1 ? "s" : "") + "</div>" +
-    "<label>Notes for " + escapeHtml(vendor) + "</label>" +
-    '<textarea id="vnotes" placeholder="Rep conversations, special instructions…">' + escapeHtml(meta.notes) + "</textarea>";
-  head.querySelector("#vnotes").addEventListener("input", (e) => {
-    if (!state.vendorMeta[vendor]) state.vendorMeta[vendor] = { notes: "" };
-    state.vendorMeta[vendor].notes = e.target.value;
+    '<div class="pages">' + pages.length + " page" + (pages.length !== 1 ? "s" : "") + "</div>";
+  head.appendChild(titleRow);
+  head.querySelector("#vnote-left").addEventListener("input", (e) => {
+    if (!state.vendorMeta[vendor]) state.vendorMeta[vendor] = { notes: "", noteLeft: "", noteRight: "" };
+    state.vendorMeta[vendor].noteLeft = e.target.value;
+    scheduleSave();
+  });
+  head.querySelector("#vnote-right").addEventListener("input", (e) => {
+    if (!state.vendorMeta[vendor]) state.vendorMeta[vendor] = { notes: "", noteLeft: "", noteRight: "" };
+    state.vendorMeta[vendor].noteRight = e.target.value;
     scheduleSave();
   });
   main.appendChild(head);
@@ -557,6 +570,7 @@ function recomputeTotals() {
   amt.classList.toggle("below-min", belowMin);
   if (warn) warn.style.display = belowMin ? "" : "none";
   renderMasterTable();
+  renderItemsTable();
 }
 function renderMasterTable() {
   const tbody = $("#m-table-body");
@@ -602,6 +616,63 @@ function renderMasterTable() {
     const tr = document.createElement("tr");
     tr.className = "mp-empty";
     tr.innerHTML = '<td colspan="3">All vendors hidden</td>';
+    tbody.appendChild(tr);
+  }
+}
+
+function renderItemsTable() {
+  const tbody = $("#m-items-body");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+  const items = [];
+  for (const [key, qtyStr] of Object.entries(state.order)) {
+    const qty = parseInt(qtyStr, 10);
+    if (!qty || qty <= 0) continue;
+    const parts = key.split("|");
+    const pageIdx = parseInt(parts[0], 10);
+    const widgetName = parts[1];
+    const page = state.data.pages.find((p) => p.index === pageIdx);
+    if (!page) continue;
+    const w = page.widgets.find((ww) => ww.name === widgetName);
+    if (!w) continue;
+    items.push({ key, qty, page, widget: w });
+  }
+  items.sort((a, b) => (a.page.vendor || "").localeCompare(b.page.vendor || "") || a.page.index - b.page.index);
+  for (const it of items) {
+    const tr = document.createElement("tr");
+    const upc = (it.widget.row && it.widget.row.upc) || "";
+    const desc = (it.widget.row && it.widget.row.description) || "";
+    tr.innerHTML =
+      '<td style="font-family:monospace;font-size:11px">' + escapeHtml(upc) + '</td>' +
+      '<td>' + escapeHtml(desc) + '</td>' +
+      '<td class="mp-num"><input type="number" min="0" value="' + it.qty + '" data-key="' + cssEscapeAttr(it.key) + '"></td>' +
+      '<td><button class="mp-del" data-key="' + cssEscapeAttr(it.key) + '" title="Remove">×</button></td>';
+    tbody.appendChild(tr);
+  }
+  tbody.querySelectorAll('input[type="number"]').forEach((inp) => {
+    inp.addEventListener("input", () => {
+      const key = inp.dataset.key;
+      const v = inp.value;
+      if (v === "" || v === "0" || parseInt(v, 10) <= 0) {
+        delete state.order[key];
+      } else {
+        state.order[key] = String(parseInt(v, 10));
+      }
+      scheduleSave();
+      recomputeTotals();
+    });
+  });
+  tbody.querySelectorAll('.mp-del').forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      delete state.order[key];
+      scheduleSave();
+      recomputeTotals();
+    });
+  });
+  if (items.length === 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td colspan="4" style="color:var(--muted);font-style:italic;padding:12px 4px;text-align:center">No items yet — type quantities in a vendor page</td>';
     tbody.appendChild(tr);
   }
 }

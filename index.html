@@ -75,7 +75,14 @@
   #masterPanel .mp-table th { font-weight: 600; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
   #masterPanel .mp-table td.mp-num, #masterPanel .mp-table th.mp-num { text-align: right; font-variant-numeric: tabular-nums; }
   #masterPanel .mp-table input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
-  #masterPanel .mp-table tr.mp-empty td { color: var(--muted); font-style: italic; padding: 12px 4px; text-align: center; }
+  #masterPanel .mp-items-title { font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; letter-spacing: 0.3px; }
+  #masterPanel .mp-items-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  #masterPanel .mp-items-table th, #masterPanel .mp-items-table td { padding: 5px 4px; text-align: left; border-bottom: 1px solid var(--border); }
+  #masterPanel .mp-items-table th { font-weight: 600; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+  #masterPanel .mp-items-table td.mp-num, #masterPanel .mp-items-table th.mp-num { text-align: right; }
+  #masterPanel .mp-items-table input[type="number"] { width: 50px; padding: 2px 4px; font-size: 12px; text-align: center; border: 1px solid var(--border); border-radius: 4px; }
+  #masterPanel .mp-items-table .mp-del { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 16px; padding: 0 4px; }
+  #masterPanel .mp-items-table .mp-del:hover { color: #b30010; }
     width: 100%;
     text-align: left;
     background: none;
@@ -133,6 +140,24 @@
     color: var(--text);
   }
   .vendor-header textarea { min-height: 56px; resize: vertical; }
+  .vendor-notes-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .vendor-notes-pair.single { grid-template-columns: 1fr; }
+  .vendor-note-box {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 8pt;
+    line-height: 1.2;
+    color: #0a4ec9;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    min-height: 56px;
+    resize: vertical;
+    text-transform: uppercase;
+  }
+  .vendor-title-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .vendor-title-row h2 { margin: 0; font-size: 20px; }
 
   .page-block {
     background: var(--panel);
@@ -296,6 +321,11 @@
       <table class="mp-table">
         <thead><tr><th>Vendor</th><th class="mp-num">Subtotal</th><th title="Hide from sidebar">Hide</th></tr></thead>
         <tbody id="m-table-body"></tbody>
+      </table>
+      <h3 class="mp-items-title">Order Items</h3>
+      <table class="mp-items-table">
+        <thead><tr><th>UPC</th><th>Description</th><th class="mp-num">Qty</th><th>×</th></tr></thead>
+        <tbody id="m-items-body"></tbody>
       </table>
     </section>
     <h2>Vendors</h2>
