@@ -514,6 +514,7 @@ function overlayWidgets(wrap, pageData, viewport) {
         input.classList.add("has-value");
       }
       scheduleSave();
+      console.log("qty handler fired");
       recomputeTotals();
       updateVendorNavIndicators();
     });
