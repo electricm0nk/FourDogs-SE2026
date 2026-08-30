@@ -577,6 +577,7 @@ function recomputeTotals() {
 function renderMasterTable() {
   const tbody = $("#m-table-body");
   if (!tbody) return;
+  tbody.innerHTML = "";
   const map = vendorPages();
   const vendors = Object.keys(map).sort((a, b) => {
     if (a === "Other") return 1;
