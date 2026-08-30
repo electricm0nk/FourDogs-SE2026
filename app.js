@@ -579,6 +579,8 @@ let _rc = 0; function recomputeTotals() {
 }
 let _rmt = 0; function renderMasterTable() {
   _rmt++;
+  console.log("renderMasterTable call #" + _rmt + " from " + (new Error()).stack.split("
+")[2]);
   if (_rmt > 1) console.warn('renderMasterTable called ' + _rmt + ' times');
   const tbody = $("#m-table-body");
   if (!tbody) return;
