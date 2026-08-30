@@ -1,4 +1,4 @@
-const CACHE = "sepet2026-v6";
+const CACHE = "sepet2026-v7";
 // Caches HTML, JS, PDF, and data so the app works offline.
 
 const ASSETS = [
