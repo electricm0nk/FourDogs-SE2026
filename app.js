@@ -596,7 +596,7 @@ function renderMasterTable() {
     tr.innerHTML =
       '<td>' + escapeHtml(v) + '</td>' +
       '<td class="mp-num">$' + subtotal.toFixed(2) + '</td>' +
-      '<td style="text-align:center"><input type="checkbox" data-vendor="' + cssEscapeAttr(v) + '"' + (isHidden ? ' checked' : '') + '></td>';
+      '<td style="text-align:center"><input type="checkbox" data-vendor="' + v.replace(/'/g, '&apos;') + '"' + (isHidden ? ' checked' : '') + '></td>';
     tbody.appendChild(tr);
   }
   // Footer row with grand total
@@ -651,8 +651,8 @@ function renderItemsTable() {
     tr.innerHTML =
       '<td style="font-family:monospace;font-size:11px">' + escapeHtml(upc) + '</td>' +
       '<td>' + escapeHtml(desc) + '</td>' +
-      '<td class="mp-num"><input type="number" min="0" value="' + it.qty + '" data-key="' + cssEscapeAttr(it.key) + '"></td>' +
-      '<td><button class="mp-del" data-key="' + cssEscapeAttr(it.key) + '" title="Remove">×</button></td>';
+      '<td class="mp-num"><input type="number" min="0" value="' + it.qty + '" data-key="' + it.key.replace(/'/g, '&apos;') + '"></td>' +
+      '<td><button class="mp-del" data-key="' + it.key.replace(/'/g, '&apos;') + '" title="Remove">×</button></td>';
     tbody.appendChild(tr);
   }
   // Use event delegation to avoid stacking listeners on re-render.
@@ -720,7 +720,7 @@ function updateVendorNavIndicators() {
    for (const v of vendors) {
     const pages = map[v];
     const any = pages.some((p) => Object.keys(state.order).some((k) => k.startsWith(p.index + "|") && state.order[k]));
-    const btn = $("#vendorList button[data-vendor='" + cssEscapeAttr(v) + "']");
+    const btn = $("#vendorList button[data-vendor='" + v.replace(/'/g, "&apos;") + "']");
     if (btn) btn.classList.toggle("has-input", any);
   }
 }
