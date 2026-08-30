@@ -320,9 +320,15 @@ function selectMaster() {
   const node = tpl.content.firstElementChild.cloneNode(true);
   main.appendChild(node);
   renderToolbarIntoMain();
-  setupMasterPanel();
-  renderMasterTable();
-  renderItemsTable();
+  $("#main").scrollTop = 0;
+}
+
+function selectVendor(vendor) {
+  state.currentVendor = vendor;
+  $$("#vendorList button").forEach((b) => {
+    b.classList.toggle("active", b.dataset.vendor === vendor);
+  });
+  renderVendorView(vendor);
   $("#main").scrollTop = 0;
 }
 
@@ -703,32 +709,6 @@ function renderItemsTable() {
     tr.innerHTML = '<td colspan="4" style="color:var(--muted);font-style:italic;padding:12px 4px;text-align:center">No items yet — type quantities in a vendor page</td>';
     tbody.appendChild(tr);
   }
-}
-
-let _masterPanelBound = false;
-function setupMasterPanel() {
-   const storeInput = $("#m-store");
-   const cityInput = $("#m-city");
-  if (storeInput && !_masterPanelBound) {
-     storeInput.value = state.buyer.storeName || "";
-     storeInput.addEventListener("input", (e) => {
-       state.buyer.storeName = e.target.value;
-       scheduleSave();
-       // Update buyer header if visible
-       const bh = $("#bh-store");
-       if (bh) bh.value = e.target.value;
-     });
-   }
-  if (cityInput && !_masterPanelBound) {
-     cityInput.value = state.buyer.city || "";
-     cityInput.addEventListener("input", (e) => {
-       state.buyer.city = e.target.value;
-       scheduleSave();
-       const bh = $("#bh-city");
-       if (bh) bh.value = e.target.value;
-     });
-   }
-  if (storeInput || cityInput) _masterPanelBound = true;
 }
 
 function updateVendorNavIndicators() {
