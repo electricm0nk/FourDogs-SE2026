@@ -243,15 +243,8 @@ async function boot() {
   state.pdfjsDoc = await pdfjsLib.getDocument({ data: state.pdfBytes.slice(0) }).promise;
   state.pdfBytesForLib = state.pdfBytes.slice(0);
 
-  setupMasterPanel();
-  renderMasterTable();
-  renderItemsTable();
   buildVendorList();
-
-  const map = vendorPages();
-  const vendors = Object.keys(map).filter((v) => v !== "Other").sort();
-  const firstVendor = vendors[0] || Object.keys(map)[0] || null;
-  selectVendor(firstVendor);
+  selectMaster();
 
   setSaveState("Ready ✓", "ok");
   $("#sidebarToggle").addEventListener("click", () => {
@@ -282,6 +275,19 @@ function vendorPages() {
 
 function buildVendorList() {
   const ul = $("#vendorList");
+  ul.innerHTML = "";
+  // Master entry first
+  const masterLi = document.createElement("li");
+  const masterBtn = document.createElement("button");
+  masterBtn.textContent = "Master";
+  masterBtn.dataset.master = "1";
+  masterBtn.classList.add("master-btn");
+  masterBtn.addEventListener("click", () => {
+    selectMaster();
+    $("#sidebar").classList.remove("open");
+  });
+  masterLi.appendChild(masterBtn);
+  ul.appendChild(masterLi);
   const map = vendorPages();
   // Filter out hidden vendors for sidebar display (export still uses all)
   const vendors = Object.keys(map).filter((v) => !state.master.hiddenVendors[v]).sort((a, b) => {
@@ -289,7 +295,6 @@ function buildVendorList() {
     if (b === "Other") return -1;
     return a.localeCompare(b);
   });
-  ul.innerHTML = "";
   for (const v of vendors) {
     const li = document.createElement("li");
     const btn = document.createElement("button");
@@ -303,13 +308,21 @@ function buildVendorList() {
     ul.appendChild(li);
   }
 }
-
-function selectVendor(vendor) {
-  state.currentVendor = vendor;
+function selectMaster() {
+  state.currentVendor = null;
   $$("#vendorList button").forEach((b) => {
-    b.classList.toggle("active", b.dataset.vendor === vendor);
+    b.classList.toggle("active", b.dataset.master === "1");
   });
-  renderVendorView(vendor);
+  const main = $("#main");
+  main.innerHTML = "";
+  renderBuyerHeader();
+  const tpl = $("#masterPanelTemplate");
+  const node = tpl.content.firstElementChild.cloneNode(true);
+  main.appendChild(node);
+  renderToolbarIntoMain();
+  setupMasterPanel();
+  renderMasterTable();
+  renderItemsTable();
   $("#main").scrollTop = 0;
 }
 
@@ -692,28 +705,31 @@ function renderItemsTable() {
   }
 }
 
+let _masterPanelBound = false;
 function setupMasterPanel() {
-  const storeInput = $("#m-store");
-  const cityInput = $("#m-city");
-  if (storeInput) {
-    storeInput.value = state.buyer.storeName || "";
-    storeInput.addEventListener("input", (e) => {
-      state.buyer.storeName = e.target.value;
-      scheduleSave();
-      // Update buyer header if visible
-      const bh = $("#bh-store");
-      if (bh) bh.value = e.target.value;
-    });
-  }
-  if (cityInput) {
-    cityInput.value = state.buyer.city || "";
-    cityInput.addEventListener("input", (e) => {
-      state.buyer.city = e.target.value;
-      scheduleSave();
-      const bh = $("#bh-city");
-      if (bh) bh.value = e.target.value;
-    });
-  }
+   const storeInput = $("#m-store");
+   const cityInput = $("#m-city");
+  if (storeInput && !_masterPanelBound) {
+     storeInput.value = state.buyer.storeName || "";
+     storeInput.addEventListener("input", (e) => {
+       state.buyer.storeName = e.target.value;
+       scheduleSave();
+       // Update buyer header if visible
+       const bh = $("#bh-store");
+       if (bh) bh.value = e.target.value;
+     });
+   }
+  if (cityInput && !_masterPanelBound) {
+     cityInput.value = state.buyer.city || "";
+     cityInput.addEventListener("input", (e) => {
+       state.buyer.city = e.target.value;
+       scheduleSave();
+       const bh = $("#bh-city");
+       if (bh) bh.value = e.target.value;
+     });
+   }
+  if (storeInput || cityInput) _masterPanelBound = true;
+ }
 }
 
 function updateVendorNavIndicators() {

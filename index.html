@@ -83,7 +83,36 @@
   #masterPanel .mp-items-table input[type="number"] { width: 50px; padding: 2px 4px; font-size: 12px; text-align: center; border: 1px solid var(--border); border-radius: 4px; }
   #masterPanel .mp-items-table .mp-del { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 16px; padding: 0 4px; }
   #masterPanel .mp-items-table .mp-del:hover { color: #b30010; }
-    width: 100%;
+  #masterPanel.master-page { background: #fff; border-radius: 10px; padding: 18px 22px; margin: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); max-width: 1100px; }
+  #masterPanel.master-page .mp-buyer { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  #masterPanel.master-page .mp-buyer .mp-label { grid-column: span 1; margin-top: 0; }
+  #masterPanel.master-page .mp-vendor-title { font-size: 22px; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+  #masterPanel.master-page .mp-items-title { font-size: 14px; margin-top: 20px; }
+  #masterPanel.master-page .mp-table { font-size: 14px; }
+  #masterPanel.master-page .mp-items-table { font-size: 14px; }
+
+  nav.sidebar li button.master-btn {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    margin: 6px 8px 12px;
+    border-radius: 6px;
+    padding: 12px 14px;
+    border-left: none;
+    width: calc(100% - 16px);
+    text-align: center;
+    font-size: 16px;
+  }
+  nav.sidebar li button.master-btn.active {
+    background: var(--accent);
+    color: #fff;
+  nav.sidebar li button.master-btn.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 2px var(--accent-soft);
+  }
+  nav.sidebar li button {
+
     text-align: left;
     background: none;
     border: none;
@@ -312,26 +341,29 @@
 
 <div class="layout">
   <nav class="sidebar" id="sidebar">
-    <section id="masterPanel">
-      <h2>Master</h2>
+    <ul id="vendorList"></ul>
+  </nav>
+  <main id="main"></main>
+<template id="masterPanelTemplate">
+  <section id="masterPanel" class="master-page">
+    <div class="mp-buyer">
       <label class="mp-label">Store name (writes to all pages)</label>
       <input id="m-store" placeholder="My Pet Store" />
       <label class="mp-label">City / State</label>
       <input id="m-city" placeholder="Atlanta, GA" />
-      <table class="mp-table">
-        <thead><tr><th>Vendor</th><th class="mp-num">Subtotal</th><th title="Hide from sidebar">Hide</th></tr></thead>
-        <tbody id="m-table-body"></tbody>
-      </table>
-      <h3 class="mp-items-title">Order Items</h3>
-      <table class="mp-items-table">
-        <thead><tr><th>UPC</th><th>Description</th><th class="mp-num">Qty</th><th>×</th></tr></thead>
-        <tbody id="m-items-body"></tbody>
-      </table>
-    </section>
-    <h2>Vendors</h2>
-    <ul id="vendorList"></ul>
-  </nav>
-  <main id="main"></main>
+    </div>
+    <h2 class="mp-vendor-title">Master Order Summary</h2>
+    <table class="mp-table">
+      <thead><tr><th>Vendor</th><th class="mp-num">Subtotal</th><th title="Hide from sidebar">Hide</th></tr></thead>
+      <tbody id="m-table-body"></tbody>
+    </table>
+    <h3 class="mp-items-title">Order Items</h3>
+    <table class="mp-items-table">
+      <thead><tr><th>UPC</th><th>Description</th><th class="mp-num">Qty</th><th>×</th></tr></thead>
+      <tbody id="m-items-body"></tbody>
+    </table>
+  </section>
+</template>
 </div>
 
 <div class="toast" id="toast"></div>
