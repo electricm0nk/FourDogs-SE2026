@@ -1,0 +1,10 @@
+.git/
+.wrangler/
+node_modules/
+scripts/
+docs/
+*.md
+.gitignore
+.wranglerignore
+wrangler.jsonc
+LATEST_VERSION.txt
