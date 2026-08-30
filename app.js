@@ -841,12 +841,18 @@ function restoreJson() {
       state.checkboxFields = parsed.checkboxFields || {};
       state.buyer.storeName = parsed.buyer?.storeName || "";
       state.buyer.city = parsed.buyer?.city || "";
+      state.master = parsed.master || { hiddenVendors: {} };
+      if (!state.master.hiddenVendors) state.master.hiddenVendors = {};
       persist();
-      // Rebuild the fixed controls before restoring the current vendor's pages.
-      $("#main").innerHTML = "";
-      renderBuyerHeader();
-      renderToolbarIntoMain();
-      renderVendorView(state.currentVendor);
+      buildVendorList();
+      if (state.currentVendor) {
+        $("#main").innerHTML = "";
+        renderBuyerHeader();
+        renderToolbarIntoMain();
+        renderVendorView(state.currentVendor);
+      } else {
+        selectMaster();
+      }
       updateVendorNavIndicators();
       toast("Restored ✓");
     } catch (e) {
