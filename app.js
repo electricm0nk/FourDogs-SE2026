@@ -561,7 +561,9 @@ function computeVendorSubtotals() {
   return result;
 }
 
-function recomputeTotals() {
+let _rc = 0; function recomputeTotals() {
+  _rc++;
+  if (_rc > 5) console.warn('recompute called ' + _rc + ' times');
   const subtotal = computeSubtotal();
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
