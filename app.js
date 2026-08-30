@@ -577,7 +577,7 @@ function recomputeTotals() {
   renderMasterTable();
   renderItemsTable();
 }
-function renderMasterTable() {
+let _rmt = 0; function renderMasterTable() { _rmt++; if (_rmt > 10) console.warn("renderMT call " + _rmt);
   const tbody = $("#m-table-body");
   if (!tbody) return;
   const map = vendorPages();
