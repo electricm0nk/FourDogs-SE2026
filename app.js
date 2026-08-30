@@ -385,7 +385,7 @@ function renderToolbarIntoMain() {
       '<div class="amount" id="subtotalAmt">$0.00</div>' +
       '<div class="min-warn" id="minWarn" style="display:none">Min $' + ORDER_MIN + ' — add more</div>' +
     '</div>';
-  m.insertBefore(div, m.children[1]); // after buyer-header
+  m.insertBefore(div, m.children[1] || null); // after buyer-header
   div.querySelector("#btnSubmit").addEventListener("click", submitOrder);
   div.querySelector("#btnSaveFiles").addEventListener("click", saveToFiles);
   div.querySelector("#btnBackup").addEventListener("click", backupJson);
@@ -842,10 +842,10 @@ function restoreJson() {
       state.buyer.storeName = parsed.buyer?.storeName || "";
       state.buyer.city = parsed.buyer?.city || "";
       persist();
-      // re-render
+      // Rebuild the fixed controls before restoring the current vendor's pages.
       $("#main").innerHTML = "";
+      renderBuyerHeader();
       renderToolbarIntoMain();
-
       renderVendorView(state.currentVendor);
       updateVendorNavIndicators();
       toast("Restored ✓");
