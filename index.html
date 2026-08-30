@@ -211,10 +211,12 @@
     border: 0;
     background: rgba(255, 255, 255, 0.78);
     color: #1d1d1f;
-    font-size: 13px;
+    font-size: 26px;
     font-weight: 600;
     line-height: 1;
-    text-align: center;
+    height: 30px !important;
+    transform: translateY(-9px);
+    text-align: left;
   }
   .buyer-overlay:focus { outline: none; }
 
@@ -229,8 +231,7 @@
     font-family: "Courier New", Courier, monospace;
     font-size: 11px;
     font-weight: 700;
-    line-height: 1;
-    text-align: center;
+    text-align: left;
   }
   .fromm-text-overlay::placeholder { color: #7a6500; opacity: 1; }
   .fromm-text-overlay:focus {
@@ -238,6 +239,26 @@
     border-color: var(--accent);
     outline: none;
     box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  .fromm-checkbox-overlay {
+    position: absolute;
+    z-index: 11;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #b8860b;
+    border-radius: 2px;
+    background: rgba(255, 235, 59, 0.6);
+    cursor: pointer;
+  }
+  .fromm-checkbox-overlay:checked {
+    background: #0a4ec9;
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px #0a4ec9;
+  }
+  .fromm-checkbox-overlay:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
   }
 
   .vendor-note-overlay {
@@ -252,8 +273,7 @@
     font-family: "Courier New", Courier, monospace;
     font-size: 8pt;
     font-weight: 700;
-    line-height: 1;
-    text-align: center;
+    text-align: left;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
   }
   .vendor-note-overlay::placeholder { color: #7a6500; opacity: 1; }

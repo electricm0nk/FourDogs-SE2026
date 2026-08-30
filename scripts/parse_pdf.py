@@ -41,7 +41,7 @@ from pathlib import Path
 import pymupdf
 
 PDF_PATH = Path(__file__).resolve().parents[1] / "assets" / "2026-Trade-Show-Book.pdf"
-OUT_PATH = Path(__file__).resolve().parents[1] / "app" / "data" / "data.json"
+OUT_PATH = Path(__file__).resolve().parents[1] / "data" / "data.json"
 
 HEADER_BOILERPLATE_LINES = {
     "email: flyer@southeastpet.com   |   phone: 770.948.7600   |    www.southeastpet.com",
@@ -73,6 +73,61 @@ QTY_HEADER_TOKENS = {
 # Tokens that mark an EXCLUDED column (computed totals, prices — never user-edited)
 EXCLUDED_HEADER_TOKENS = {
     "$", "net", "list", "%off", "discount", "save", "total", "tot",
+}
+
+# Pages whose title art omits a machine-readable vendor name. These assignments
+# were audited against the adjacent page sequence and the products on the page.
+PAGE_VENDOR_OVERRIDES = {
+    1: "Catalog Cover",
+    9: "Acana",
+    13: "Alcott",
+    23: "Austin & Kat",
+    24: "Barkworthies",
+    27: "Barkworthies",
+    **dict.fromkeys(range(28, 33), "Baydog"),
+    34: "Benebone",
+    36: "Benebone",
+    **dict.fromkeys(range(39, 45), "Big Country Raw"),
+    47: "Bocce’s Bakery",
+    49: "Bones & Co",
+    53: "Brightkins",
+    **dict.fromkeys((59, 60), "Carna4"),
+    70: "Dave’s",
+    83: "Earth Animal",
+    85: "Earthbath",
+    **dict.fromkeys((94, 104), "Farmina"),
+    119: "Fromm",
+    135: "Fromm",
+    137: "Furever Fierce",
+    **dict.fromkeys((145, 146, 147), "GivePet"),
+    152: "Green Coast Pet",
+    161: "Growl",
+    178: "Honest To Goodness",
+    179: "Hugglehounds",
+    189: "Huxley & Kent",
+    190: "Icelandic+",
+    194: "Icelandic+",
+    195: "Inaba",
+    198: "Inaba",
+    200: "IndiPets",
+    202: "Intersand",
+    205: "Jolly Pets",
+    **dict.fromkeys((218, 219), "Lotus"),
+    222: "Messy Mutts",
+    236: "Wholesomes",
+    263: "Nootie",
+    282: "Open Farm",
+    285: "Palz&Co",
+    318: "Pure Vita",
+    **dict.fromkeys((326, 328), "Raised Right"),
+    **dict.fromkeys((349, 350), "Smallbatch"),
+    357: "SquarePet",
+    360: "Stella & Chewy’s",
+    **dict.fromkeys((379, 380, 382), "Treat Planet"),
+    **dict.fromkeys((384, 386), "TropiClean"),
+    427: "Wondercide",
+    **dict.fromkeys((447, 450), "ZIWI"),
+    451: "Zymox",
 }
 
 
@@ -281,17 +336,12 @@ def main():
         page = doc[pno]
         page_text = page.get_text("text").strip()
         has_text = bool(page_text)
-
-        # Try content-based vendor detection first (handles Fromm etc.)
         content_vendor = detect_vendor_from_content(page_text) if has_text else None
-        # Then header-based
         header_vendor = detect_vendor(page_text) if has_text else None
-        # Only carry prev_vendor forward if neither detector fires AND the page
-        # looks like a continuation of the previous vendor (e.g. page is blank
-        # or the previous vendor has no title line that would override it).
-        # For strong content matches like Fromm, do NOT carry forward into
-        # unrelated pages.
-        if content_vendor:
+        vendor_override = PAGE_VENDOR_OVERRIDES.get(pno + 1)
+        if vendor_override:
+            vendor = vendor_override
+        elif content_vendor:
             vendor = content_vendor
         elif header_vendor:
             vendor = header_vendor
@@ -346,6 +396,7 @@ def main():
             widget_records.append({
                 "name": w.field_name,
                 "kind": kind,
+                "field_type": w.field_type_string,
                 "upc": row_match["upc"] if row_match else None,
                 "net_price": net_price,
                 "occurrence": occ,

@@ -22,6 +22,7 @@ const state = window._state = {
   order: {}, // key "page|widget" -> qty string
   vendorMeta: {}, // vendorName -> { notes }
   textFields: {}, // key "page|widget" -> text string
+  checkboxFields: {}, // key "page|widget" -> checked
   buyer: { storeName: "", city: "" },
   master: { hiddenVendors: {} }, // vendorName -> bool (true = hidden in sidebar)
   filesHandle: null, // FileSystemFileHandle for iPad Safari auto-save
@@ -66,6 +67,7 @@ function loadOrder() {
       state.order = parsed.order || {};
       state.vendorMeta = parsed.vendorMeta || {};
       state.textFields = parsed.textFields || {};
+      state.checkboxFields = parsed.checkboxFields || {};
       state.buyer.storeName = parsed.buyer?.storeName || "";
       state.buyer.city = parsed.buyer?.city || "";
       state.master = parsed.master || { hiddenVendors: {} };
@@ -90,6 +92,7 @@ function persist() {
       order: state.order,
       vendorMeta: state.vendorMeta,
       textFields: state.textFields,
+      checkboxFields: state.checkboxFields,
       buyer: state.buyer,
       master: state.master,
       savedAt: new Date().toISOString(),
@@ -513,7 +516,7 @@ function addVendorNoteOverlays(wrap, pageData, pageW, pageH) {
     const note = document.createElement("input");
     note.type = "text";
     note.className = "vendor-note-overlay";
-    note.placeholder = side === "left" ? "Left note" : "Right note";
+    note.placeholder = "";
     note.value = side === "left" ? (meta.noteLeft || "") : (meta.noteRight || "");
     note.dataset.vendor = vendor;
     note.dataset.side = side;
@@ -524,35 +527,62 @@ function addVendorNoteOverlays(wrap, pageData, pageW, pageH) {
   }
 }
 
+function addFrommControl(wrap, pageData, widget, pageW, pageH) {
+  const key = pageData.index + "|" + widget.name;
+  if (widget.field_type === "CheckBox") {
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "fromm-checkbox-overlay";
+    checkbox.checked = Boolean(state.checkboxFields[key]);
+    checkbox.dataset.page = pageData.index;
+    checkbox.dataset.widget = widget.name;
+    checkbox.setAttribute("aria-label", "Fromm page " + pageData.index + " checkbox");
+    positionOverlay(checkbox, widget.rect, pageW, pageH);
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) state.checkboxFields[key] = true;
+      else delete state.checkboxFields[key];
+      scheduleSave();
+    });
+    wrap.appendChild(checkbox);
+    return;
+  }
+  if (widget.field_type !== "Text") return;
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.inputMode = "text";
+  input.className = "fromm-text-overlay";
+  input.value = state.textFields[key] || "";
+  input.placeholder = "";
+  input.dataset.page = pageData.index;
+  input.dataset.widget = widget.name;
+  input.setAttribute("aria-label", "Fromm page " + pageData.index + " text field");
+  positionOverlay(input, widget.rect, pageW, pageH);
+  input.addEventListener("input", () => {
+    if (input.value) state.textFields[key] = input.value;
+    else delete state.textFields[key];
+    scheduleSave();
+  });
+  wrap.appendChild(input);
+}
+
 function overlayWidgets(wrap, pageData) {
   const pageW = state.data.page_size[0];
   const pageH = state.data.page_size[1];
   for (const w of pageData.widgets || []) {
+    if (pageData.vendor === "Fromm" && w.kind !== "qty") {
+      addFrommControl(wrap, pageData, w, pageW, pageH);
+      continue;
+    }
     if (w.kind === "store_name") {
-      const key = pageData.index + "|" + w.name;
       const input = document.createElement("input");
       input.type = "text";
-      input.inputMode = "text";
-      input.dataset.page = pageData.index;
-      input.dataset.widget = w.name;
+      input.readOnly = true;
+      input.className = "buyer-overlay";
+      input.value = buyerLine();
+      input.placeholder = "Store name — City / State";
+      input.setAttribute("aria-label", "Store name and city or state");
       positionOverlay(input, w.rect, pageW, pageH);
-      if (pageData.vendor === "Fromm") {
-        input.className = "fromm-text-overlay";
-        input.value = state.textFields[key] || "";
-        input.placeholder = "Enter text";
-        input.setAttribute("aria-label", "Fromm page " + pageData.index + " text field");
-        input.addEventListener("input", () => {
-          if (input.value) state.textFields[key] = input.value;
-          else delete state.textFields[key];
-          scheduleSave();
-        });
-      } else {
-        input.readOnly = true;
-        input.className = "buyer-overlay";
-        input.value = buyerLine();
-        input.placeholder = "Store name — City / State";
-        input.setAttribute("aria-label", "Store name and city or state");
-      }
       wrap.appendChild(input);
       continue;
     }
@@ -780,6 +810,7 @@ function backupJson() {
     order: state.order,
     vendorMeta: state.vendorMeta,
     textFields: state.textFields,
+    checkboxFields: state.checkboxFields,
     buyer: state.buyer,
     savedAt: new Date().toISOString(),
   }, null, 2);
@@ -804,6 +835,7 @@ function restoreJson() {
       state.order = parsed.order || {};
       state.vendorMeta = parsed.vendorMeta || {};
       state.textFields = parsed.textFields || {};
+      state.checkboxFields = parsed.checkboxFields || {};
       state.buyer.storeName = parsed.buyer?.storeName || "";
       state.buyer.city = parsed.buyer?.city || "";
       persist();
@@ -840,6 +872,9 @@ function clearCurrentVendor() {
       }
       for (const key of Object.keys(state.textFields)) {
         if (key.startsWith(p.index + "|")) delete state.textFields[key];
+      }
+      for (const key of Object.keys(state.checkboxFields)) {
+        if (key.startsWith(p.index + "|")) delete state.checkboxFields[key];
       }
     }
     hideModal();
@@ -905,19 +940,29 @@ async function doExport() {
       }
     }
 
-    // Fill qty values
+    // Fill quantities and Fromm controls using their original PDF field names.
     const allFields = form.getFields();
-
-    // Fill editable Fromm fields using their original PDF field names.
+    const fieldsByName = new Map(allFields.map((field) => [field.getName(), field]));
     for (const [key, value] of Object.entries(state.textFields)) {
       if (!value) continue;
       const widgetName = key.slice(key.indexOf("|") + 1);
-      const field = allFields.find((f) => f.getName() === widgetName);
+      const field = fieldsByName.get(widgetName);
       if (field && typeof field.setText === "function") {
         try {
           field.setText(value);
         } catch (e) {
           console.warn("set text failed", widgetName, e);
+        }
+      }
+    }
+    for (const key of Object.keys(state.checkboxFields)) {
+      const widgetName = key.slice(key.indexOf("|") + 1);
+      const field = fieldsByName.get(widgetName);
+      if (field && typeof field.check === "function") {
+        try {
+          field.check();
+        } catch (e) {
+          console.warn("check field failed", widgetName, e);
         }
       }
     }
@@ -927,7 +972,7 @@ async function doExport() {
       if (!qty || qty <= 0) continue;
       const parts = key.split("|");
       const widgetName = parts[1];
-      const field = allFields.find((f) => f.getName() === widgetName);
+      const field = fieldsByName.get(widgetName);
       if (field && typeof field.setText === "function") {
         try {
           field.setText(String(qty));
