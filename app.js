@@ -951,7 +951,10 @@ function escapeHtml(s) {
 }
 function escapeAttr(s) { return escapeHtml(s); }
 function cssEscapeAttr(s) {
-  return String(s).replace(/[^a-zA-Z0-9_-]/g, (c) => "\\" + c);
+  // Encode for CSS attribute selectors; escapes anything that isn't
+  // alphanumeric, dash, or underscore. We avoid escaping pipes since
+  // dataset.key reads back the literal string (no CSS selector escape).
+  return String(s).replace(/[^a-zA-Z0-9_-]/g, '_');
 }
 function csvEscape(s) {
   s = String(s == null ? "" : s);
