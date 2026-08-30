@@ -507,7 +507,7 @@ function addVendorNoteOverlays(wrap, pageData, pageW, pageH) {
   const meta = state.vendorMeta[vendor] || {};
   const noteRects = [
     { side: "left", rect: [130, 15, 270, 31] },
-    { side: "right", rect: [450, 15, pageW - 17, 31] },
+    { side: "right", rect: [460, 15, pageW - 17, 31] },
   ];
   for (const { side, rect } of noteRects) {
     const note = document.createElement("input");
