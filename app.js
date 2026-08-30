@@ -583,6 +583,9 @@ function overlayWidgets(wrap, pageData) {
       input.placeholder = "Store name — City / State";
       input.setAttribute("aria-label", "Store name and city or state");
       positionOverlay(input, w.rect, pageW, pageH);
+      input.style.width = "calc(" + input.style.width + " / 0.69)";
+      input.style.transform = "translateY(-9px) scaleX(0.69)";
+      input.style.transformOrigin = "left center";
       wrap.appendChild(input);
       continue;
     }
