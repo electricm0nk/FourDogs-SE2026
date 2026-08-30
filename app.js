@@ -57,6 +57,46 @@ function hideModal() {
   $("#modal").classList.remove("open");
 }
 
+const THEME_KEY = "sepet2026_theme";
+const THEMES = new Set(["light", "dark", "trapper"]);
+
+function applyTheme(theme) {
+  const selected = THEMES.has(theme) ? theme : "light";
+  document.documentElement.dataset.theme = selected;
+  $$("#themeSwitch button").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.theme === selected));
+  });
+  localStorage.setItem(THEME_KEY, selected);
+}
+
+function initThemeSwitch() {
+  let savedTheme = "light";
+  try { savedTheme = localStorage.getItem(THEME_KEY) || "light"; } catch (e) { /* use light */ }
+  applyTheme(savedTheme);
+  $$("#themeSwitch button").forEach((button) => {
+    button.addEventListener("click", () => applyTheme(button.dataset.theme));
+  });
+}
+
+function showInstructions() {
+  showModal(
+    '<div class="instructions-modal">' +
+      "<h3>How to use the order builder</h3>" +
+      "<ol>" +
+        "<li>Enter your store name and city/state at the top. They appear on every standard vendor sheet.</li>" +
+        "<li>Choose a vendor from the left. Enter quantities in the yellow boxes; the order total updates automatically.</li>" +
+        "<li>On Fromm sheets, complete every highlighted form field, checkbox, purchase quantity, and total directly on the page.</li>" +
+        "<li>Return to Master to review every ordered item, change a quantity, remove a line, or hide a vendor from the sidebar.</li>" +
+        "<li>Use Backup JSON to save your in-progress order. Use Restore JSON to continue from a saved backup.</li>" +
+        "<li>Select Submit &amp; Export to download the completed PDF and a CSV order summary.</li>" +
+      "</ol>" +
+      '<p class="tip">Your changes save automatically on this device. Back up the JSON before moving to another device.</p>' +
+      '<div class="modal-actions"><button id="cm-ok">Got it</button></div>' +
+    "</div>"
+  );
+  document.getElementById("cm-ok").onclick = hideModal;
+}
+
 // === Persistence ===
 function loadOrder() {
   try {
@@ -220,6 +260,7 @@ async function restoreFromFiles() {
 
 // === Boot ===
 async function boot() {
+  initThemeSwitch();
   setSaveState("Loading data…");
   console.log("[boot] start");
    try {
@@ -326,6 +367,7 @@ function selectMaster() {
   const tpl = $("#masterPanelTemplate");
   const node = tpl.content.firstElementChild.cloneNode(true);
   main.appendChild(node);
+  node.querySelector("#masterInstructions").addEventListener("click", showInstructions);
   renderToolbarIntoMain();
   $("#main").scrollTop = 0;
 }
@@ -551,8 +593,10 @@ function addFrommControl(wrap, pageData, widget, pageW, pageH) {
   const input = document.createElement("input");
   input.type = "text";
   input.inputMode = "text";
-  input.className = "fromm-text-overlay";
-  input.value = state.textFields[key] || "";
+  input.className = pageData.vendor === "Fromm" ? "fromm-text-overlay fromm-form-text-overlay" : "fromm-text-overlay";
+  if (widget.field_type === "Signature") {
+    input.style.fontFamily = "Caveat, 'Comic Sans MS', cursive";
+  }
   input.placeholder = "";
   input.dataset.page = pageData.index;
   input.dataset.widget = widget.name;
@@ -595,7 +639,7 @@ function overlayWidgets(wrap, pageData) {
     input.type = "number";
     input.inputMode = "numeric";
     input.className = "qty-overlay";
-    input.min = "0";
+    input.className = pageData.vendor === "Fromm" ? "qty-overlay fromm-qty-overlay" : "qty-overlay";
     input.step = "1";
     positionOverlay(input, w.rect, pageW, pageH);
     input.dataset.page = pageData.index;

@@ -19,6 +19,46 @@
     --danger: #d70015;
     --ok: #34c759;
   }
+  :root[data-theme="dark"] {
+    --bg: #111827;
+    --panel: #1f2937;
+    --border: #4b5563;
+    --text: #f9fafb;
+    --muted: #cbd5e1;
+    --accent: #60a5fa;
+    --accent-soft: #1e3a5f;
+    --danger: #fb7185;
+    --ok: #4ade80;
+  }
+  :root[data-theme="trapper"] {
+    --bg: #16c4d8;
+    --panel: #fff7bf;
+    --border: #2c1765;
+    --text: #21104d;
+    --muted: #543e7d;
+    --accent: #e6007e;
+    --accent-soft: #ffc7eb;
+    --danger: #d71920;
+    --ok: #008f61;
+  }
+  :root[data-theme="trapper"] body,
+  :root[data-theme="trapper"] main {
+    background-color: #16c4d8;
+    background-image:
+      radial-gradient(circle at 8% 12%, #fff34b 0 9px, transparent 10px),
+      radial-gradient(circle at 91% 18%, #ff6eb4 0 15px, transparent 16px),
+      linear-gradient(125deg, transparent 0 43%, rgba(102, 45, 145, 0.35) 44% 48%, transparent 49%),
+      linear-gradient(35deg, transparent 0 70%, rgba(255, 243, 75, 0.55) 71% 75%, transparent 76%);
+    background-size: 90px 90px, 120px 120px, 160px 160px, 180px 180px;
+  }
+  :root[data-theme="trapper"] header,
+  :root[data-theme="trapper"] nav.sidebar,
+  :root[data-theme="trapper"] .buyer-header,
+  :root[data-theme="trapper"] .toolbar,
+  :root[data-theme="trapper"] #masterPanel.master-page {
+    border-width: 3px;
+    box-shadow: 5px 5px 0 #2c1765;
+  }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
     margin: 0; padding: 0;
@@ -47,6 +87,31 @@
   header h1 { font-size: 17px; font-weight: 600; margin: 0; flex: 1; min-width: 0; }
   .header-total { font-size: 16px; font-weight: 700; color: var(--text); margin-left: 18px; padding: 6px 12px; background: var(--accent-soft); border-radius: 8px; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .save-state { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+
+  .theme-switch {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .theme-switch button {
+    min-height: 30px;
+    padding: 5px 8px;
+    border: 0;
+    border-right: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .theme-switch button:last-child { border-right: 0; }
+  .theme-switch button[aria-pressed="true"] {
+    background: var(--accent);
+    color: #fff;
+  }
 
   .layout { display: flex; flex: 1; overflow: hidden; min-height: 0; }
   nav.sidebar {
@@ -126,6 +191,29 @@
   #masterPanel.master-page .mp-items-title { font-size: 14px; margin-top: 20px; }
   #masterPanel.master-page .mp-table { font-size: 14px; }
   #masterPanel.master-page .mp-items-table { font-size: 14px; }
+
+  #masterPanel.master-page { background: var(--panel); }
+  #masterInstructions {
+    padding: 0;
+    margin: -4px 0 16px;
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .instructions-modal { max-width: 620px; }
+  .instructions-modal ol { padding-left: 22px; line-height: 1.5; }
+  .instructions-modal li { margin: 8px 0; }
+  .instructions-modal .tip {
+    padding: 10px 12px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 4px;
+  }
   nav.sidebar li button.active {
     background: var(--accent-soft);
     border-left-color: var(--accent);
@@ -145,20 +233,21 @@
   }
 
   .vendor-header {
-    background: var(--panel);
-    border: 1px solid var(--border);
+    background: #fff;
+    border: 1px solid #d2d2d7;
+    color: #1d1d1f;
     border-radius: 12px;
     padding: 14px;
     margin-bottom: 14px;
   }
   .vendor-header h2 { margin: 0 0 6px; font-size: 20px; }
-  .vendor-header .pages { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+  .vendor-header .pages { font-size: 13px; color: #6e6e73; margin-bottom: 10px; }
   .vendor-header label {
     display: block;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
-    color: var(--muted);
+    color: #6e6e73;
     margin-top: 10px;
     margin-bottom: 4px;
     letter-spacing: 0.3px;
@@ -167,18 +256,18 @@
   .vendor-title-row h2 { margin: 0; font-size: 20px; }
 
   .page-block {
-    background: var(--panel);
-    border: 1px solid var(--border);
+    background: #fff;
+    border: 1px solid #d2d2d7;
     border-radius: 12px;
     padding: 12px;
     margin-bottom: 14px;
   }
-  .page-block .page-title { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .page-block .page-title { font-size: 13px; color: #6e6e73; margin-bottom: 8px; }
   .page-canvas-wrap {
     position: relative;
     width: 100%;
     background: #fff;
-    border: 1px solid var(--border);
+    border: 1px solid #d2d2d7;
     overflow: hidden;
   }
   .page-canvas-wrap canvas { display: block; width: 100%; height: auto; }
@@ -232,6 +321,17 @@
     font-size: 11px;
     font-weight: 700;
     text-align: left;
+  }
+  .fromm-form-text-overlay {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .fromm-qty-overlay {
+    font-size: 18px !important;
+    font-weight: 800;
+    line-height: 1;
+    text-align: center !important;
   }
   .fromm-text-overlay::placeholder { color: #7a6500; opacity: 1; }
   .fromm-text-overlay:focus {
@@ -394,6 +494,11 @@
   <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle vendor list">☰</button>
   <h1>SE Pet 2026 Order</h1>
   <span class="header-total" id="headerTotal">TOTAL ORDER: $0.00</span>
+  <div class="theme-switch" id="themeSwitch" role="group" aria-label="Display theme">
+    <button type="button" data-theme="light" aria-pressed="true">Light</button>
+    <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
+    <button type="button" data-theme="trapper" aria-pressed="false">Trapper Keeper</button>
+  </div>
   <span class="save-state" id="saveState">Loading…</span>
 </header>
 
@@ -405,6 +510,7 @@
 <template id="masterPanelTemplate">
   <section id="masterPanel" class="master-page">
     <h2 class="mp-vendor-title">Master Order Summary</h2>
+    <button type="button" id="masterInstructions">Instructions</button>
     <table class="mp-table">
       <thead><tr><th>Vendor</th><th class="mp-num">Subtotal</th><th title="Hide from sidebar">Hide</th></tr></thead>
       <tbody id="m-table-body"></tbody>
