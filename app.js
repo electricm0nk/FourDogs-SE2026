@@ -565,9 +565,9 @@ function recomputeTotals() {
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
   const hdr = $("#headerTotal");
-  amt.textContent = "$" + subtotal.toFixed(2);
+  if (amt) amt.textContent = "$" + subtotal.toFixed(2);
   const belowMin = subtotal > 0 && subtotal < ORDER_MIN;
-  amt.classList.toggle("below-min", belowMin);
+  if (amt) amt.classList.toggle("below-min", belowMin);
   if (warn) warn.style.display = belowMin ? "" : "none";
   renderMasterTable();
   renderItemsTable();
