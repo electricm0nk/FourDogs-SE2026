@@ -515,7 +515,6 @@ function overlayWidgets(wrap, pageData, viewport) {
       }
       scheduleSave();
       console.log("qty handler fired");
-      console.log("qty handler recompute");
       recomputeTotals();
       updateVendorNavIndicators();
     });
@@ -562,9 +561,7 @@ function computeVendorSubtotals() {
   return result;
 }
 
-let _rc = 0; function recomputeTotals() {
-  _rc++;
-  if (_rc > 5) console.warn('recompute called ' + _rc + ' times');
+function recomputeTotals() {
   const subtotal = computeSubtotal();
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
@@ -685,11 +682,10 @@ function renderItemsTable() {
         const key = t.dataset.key;
         delete state.order[key];
         scheduleSave();
-        console.log("items input recompute");
         recomputeTotals();
       }
     });
-    console.log("items click handler bound");
+
     tbody.dataset.bound = "1";
   }
   if (items.length === 0) {
