@@ -501,12 +501,10 @@ function setVendorNote(vendor, side, value, source) {
 function addVendorNoteOverlays(wrap, pageData, pageW, pageH) {
   const vendor = pageData.vendor || "Other";
   const meta = state.vendorMeta[vendor] || {};
-  const noteRects = vendor === "Fromm"
-    ? [{ side: "left", rect: [12, 18, pageW - 12, 54] }]
-    : [
-        { side: "left", rect: [12, 18, pageW / 2 - 6, 54] },
-        { side: "right", rect: [pageW / 2 + 6, 18, pageW - 12, 54] },
-      ];
+  const noteRects = [
+    { side: "left", rect: [12, 18, pageW / 2 - 6, 54] },
+    { side: "right", rect: [pageW / 2 + 6, 18, pageW - 12, 54] },
+  ];
   for (const { side, rect } of noteRects) {
     const note = document.createElement("textarea");
     note.className = "vendor-note-overlay";
