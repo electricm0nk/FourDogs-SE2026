@@ -506,11 +506,12 @@ function addVendorNoteOverlays(wrap, pageData, pageW, pageH) {
   if (vendor === "Fromm") return;
   const meta = state.vendorMeta[vendor] || {};
   const noteRects = [
-    { side: "left", rect: [95, 15, 265, 31] },
-    { side: "right", rect: [405, 15, pageW - 17, 31] },
+    { side: "left", rect: [130, 15, 270, 31] },
+    { side: "right", rect: [450, 15, pageW - 17, 31] },
   ];
   for (const { side, rect } of noteRects) {
-    const note = document.createElement("textarea");
+    const note = document.createElement("input");
+    note.type = "text";
     note.className = "vendor-note-overlay";
     note.placeholder = side === "left" ? "Left note" : "Right note";
     note.value = side === "left" ? (meta.noteLeft || "") : (meta.noteRight || "");
