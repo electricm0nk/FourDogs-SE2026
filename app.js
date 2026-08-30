@@ -562,6 +562,9 @@ function computeVendorSubtotals() {
 }
 
 function recomputeTotals() {
+  if (typeof window._rc === "undefined") window._rc = 0;
+  window._rc++;
+  if (window._rc > 5) console.warn("recompute #" + window._rc);
   const subtotal = computeSubtotal();
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
