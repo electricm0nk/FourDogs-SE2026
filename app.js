@@ -565,6 +565,7 @@ function recomputeTotals() {
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
   const hdr = $("#headerTotal");
+  if (hdr) hdr.textContent = "TOTAL ORDER: $" + subtotal.toFixed(2);
   if (amt) amt.textContent = "$" + subtotal.toFixed(2);
   const belowMin = subtotal > 0 && subtotal < ORDER_MIN;
   if (amt) amt.classList.toggle("below-min", belowMin);
@@ -601,17 +602,21 @@ function renderMasterTable() {
   const footer = document.createElement("tr");
   footer.innerHTML = '<td><strong>TOTAL</strong></td><td class="mp-num"><strong>$' + total.toFixed(2) + '</strong></td><td></td>';
   tbody.appendChild(footer);
-  // Wire up hide checkboxes
-  tbody.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
-    cb.addEventListener("change", () => {
-      const vendor = cb.dataset.vendor;
-      if (cb.checked) state.master.hiddenVendors[vendor] = true;
-      else delete state.master.hiddenVendors[vendor];
-      scheduleSave();
-      renderMasterTable();
-      buildVendorList();
+  // Event delegation for hide checkboxes (avoid stacking listeners on re-render)
+  if (!tbody.dataset.boundHide) {
+    tbody.addEventListener("change", (e) => {
+      const t = e.target;
+      if (t && t.tagName === "INPUT" && t.type === "checkbox" && t.dataset.vendor) {
+        const vendor = t.dataset.vendor;
+        if (t.checked) state.master.hiddenVendors[vendor] = true;
+        else delete state.master.hiddenVendors[vendor];
+        scheduleSave();
+        renderMasterTable();
+        buildVendorList();
+      }
     });
-  });
+    tbody.dataset.boundHide = "1";
+  }
   if (visibleCount === 0) {
     const tr = document.createElement("tr");
     tr.className = "mp-empty";
@@ -649,27 +654,34 @@ function renderItemsTable() {
       '<td><button class="mp-del" data-key="' + cssEscapeAttr(it.key) + '" title="Remove">×</button></td>';
     tbody.appendChild(tr);
   }
-  tbody.querySelectorAll('input[type="number"]').forEach((inp) => {
-    inp.addEventListener("input", () => {
-      const key = inp.dataset.key;
-      const v = inp.value;
-      if (v === "" || v === "0" || parseInt(v, 10) <= 0) {
-        delete state.order[key];
-      } else {
-        state.order[key] = String(parseInt(v, 10));
+  // Use event delegation to avoid stacking listeners on re-render.
+  // Listen once on the table body — check inputs/buttons at event time.
+  if (!tbody.dataset.bound) {
+    tbody.addEventListener("input", (e) => {
+      const t = e.target;
+      if (t && t.tagName === "INPUT" && t.type === "number" && t.dataset.key) {
+        const key = t.dataset.key;
+        const v = t.value;
+        if (v === "" || v === "0" || parseInt(v, 10) <= 0) {
+          delete state.order[key];
+        } else {
+          state.order[key] = String(parseInt(v, 10));
+        }
+        scheduleSave();
+        recomputeTotals();
       }
-      scheduleSave();
-      recomputeTotals();
     });
-  });
-  tbody.querySelectorAll('.mp-del').forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const key = btn.dataset.key;
-      delete state.order[key];
-      scheduleSave();
-      recomputeTotals();
+    tbody.addEventListener("click", (e) => {
+      const t = e.target;
+      if (t && t.classList && t.classList.contains("mp-del") && t.dataset.key) {
+        const key = t.dataset.key;
+        delete state.order[key];
+        scheduleSave();
+        recomputeTotals();
+      }
     });
-  });
+    tbody.dataset.bound = "1";
+  }
   if (items.length === 0) {
     const tr = document.createElement("tr");
     tr.innerHTML = '<td colspan="4" style="color:var(--muted);font-style:italic;padding:12px 4px;text-align:center">No items yet — type quantities in a vendor page</td>';
