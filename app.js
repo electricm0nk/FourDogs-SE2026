@@ -83,14 +83,15 @@ function showInstructions() {
     '<div class="instructions-modal">' +
       "<h3>How to use the order builder</h3>" +
       "<ol>" +
-        "<li>Enter your store name and city/state at the top. They appear on every standard vendor sheet.</li>" +
-        "<li>Choose a vendor from the left. Enter quantities in the yellow boxes; the order total updates automatically.</li>" +
-        "<li>On Fromm sheets, complete every highlighted form field, checkbox, purchase quantity, and total directly on the page.</li>" +
-        "<li>Return to Master to review every ordered item, change a quantity, remove a line, or hide a vendor from the sidebar.</li>" +
-        "<li>Use Backup JSON to save your in-progress order. Use Restore JSON to continue from a saved backup.</li>" +
-        "<li>Select Submit &amp; Export to download the completed PDF and a CSV order summary.</li>" +
-      "</ol>" +
-      '<p class="tip">Your changes save automatically on this device. Back up the JSON before moving to another device.</p>' +
+        "<li><strong>Store name and city/state</strong> at the top. They appear on every standard vendor sheet.</li>" +
+        "<li><strong>Pick a vendor</strong> from the left sidebar. Enter quantities in the yellow boxes; the order total updates automatically. Yellow notes at the top of each vendor page are printed onto that vendor's PDF pages when you export.</li>" +
+        "<li><strong>Fromm sheets</strong>: complete every highlighted form field, click a checkbox to mark an X, and enter the purchase quantity and total directly on the page.</li>" +
+        "<li><strong>Master</strong> lists every ordered item, the per-vendor subtotal, and a Hide checkbox per vendor — check it to remove that vendor from the sidebar. Export still includes hidden vendors.</li>" +
+        "<li><strong>Save to Files</strong> on iPad/iPhone writes a JSON backup directly to your Files or iCloud Drive.</li>" +
+        "<li><strong>Backup JSON</strong> downloads a JSON file; <strong>Restore JSON</strong> loads it back to continue on any device.</li>" +
+        "<li><strong>Submit &amp; Export</strong> builds the filled PDF (for Southeast Pet) and a CSV summary (for your records) and downloads both. Yellow vendor notes are baked into the PDF.</li>" +
+      '</ol>' +
+      '<p class="tip">The header has a Light/Dark/Trapper Keeper theme switch. Changes save to this device; back up the JSON before switching.</p>' +
       '<div class="modal-actions"><button id="cm-ok">Got it</button></div>' +
     "</div>"
   );
@@ -1047,8 +1048,25 @@ async function doExport() {
         }
       }
     }
+    const pageHeight = state.data.page_size[1];
+
+    const pagesByIndex = new Map(pdfDoc.getPages().map((page, idx) => [idx + 1, page]));
+    for (const pageData of state.data.pages) {
+      const meta = state.vendorMeta[pageData.vendor];
+      if (!meta) continue;
+      const page = pagesByIndex.get(pageData.index);
+      if (!page) continue;
+      const left = meta.noteLeft || "";
+      const right = meta.noteRight || "";
+      if (left) page.drawText(left, { x: 132, y: pageHeight - 30, size: 8, color: rgb(0, 0, 0) });
+      if (right) page.drawText(right, { x: 462, y: pageHeight - 30, size: 8, color: rgb(0, 0, 0) });
+    }
+
+
 
     try { form.flatten(); } catch (e) { /* ignore */ }
+
+
 
     const bytes = await pdfDoc.save();
     window._lastPdfBytesLen = bytes.byteLength;
