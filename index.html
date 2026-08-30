@@ -64,7 +64,45 @@
     padding: 12px 14px 6px;
     margin: 0;
     letter-spacing: 0.5px;
+  }
   nav.sidebar ul { list-style: none; padding: 0; margin: 0; }
+  nav.sidebar li button {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 10px 14px;
+    font-size: 15px;
+    color: var(--text);
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+  nav.sidebar li button.active {
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  nav.sidebar li button.has-input {
+    box-shadow: inset 3px 0 0 var(--ok);
+  }
+  nav.sidebar li button.master-btn,
+  nav.sidebar li button.master-btn.active {
+    width: calc(100% - 16px);
+    margin: 6px 8px 12px;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 6px;
+    background: var(--accent);
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  nav.sidebar li button.master-btn.active {
+    box-shadow: 0 0 0 2px var(--accent-soft);
+  }
+
   #masterPanel { padding: 12px 14px; border-bottom: 1px solid var(--border); background: #fafafa; }
   #masterPanel .mp-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--muted); margin-top: 8px; margin-bottom: 4px; letter-spacing: 0.3px; }
   #masterPanel input[type="text"], #masterPanel input:not([type]) {
@@ -84,44 +122,10 @@
   #masterPanel .mp-items-table .mp-del { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 16px; padding: 0 4px; }
   #masterPanel .mp-items-table .mp-del:hover { color: #b30010; }
   #masterPanel.master-page { background: #fff; border-radius: 10px; padding: 18px 22px; margin: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); max-width: 1100px; }
-  #masterPanel.master-page .mp-buyer { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-  #masterPanel.master-page .mp-buyer .mp-label { grid-column: span 1; margin-top: 0; }
   #masterPanel.master-page .mp-vendor-title { font-size: 22px; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
   #masterPanel.master-page .mp-items-title { font-size: 14px; margin-top: 20px; }
   #masterPanel.master-page .mp-table { font-size: 14px; }
   #masterPanel.master-page .mp-items-table { font-size: 14px; }
-
-  nav.sidebar li button.master-btn {
-    background: var(--accent);
-    color: #fff;
-    font-weight: 700;
-    margin: 6px 8px 12px;
-    border-radius: 6px;
-    padding: 12px 14px;
-    border-left: none;
-    width: calc(100% - 16px);
-    text-align: center;
-    font-size: 16px;
-  }
-  nav.sidebar li button.master-btn.active {
-    background: var(--accent);
-    color: #fff;
-  nav.sidebar li button.master-btn.active {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 0 0 2px var(--accent-soft);
-  }
-  nav.sidebar li button {
-
-    text-align: left;
-    background: none;
-    border: none;
-    padding: 10px 14px;
-    font-size: 15px;
-    color: var(--text);
-    border-left: 3px solid transparent;
-    cursor: pointer;
-  }
   nav.sidebar li button.active {
     background: var(--accent-soft);
     border-left-color: var(--accent);
