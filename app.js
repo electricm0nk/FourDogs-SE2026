@@ -729,7 +729,6 @@ function setupMasterPanel() {
      });
    }
   if (storeInput || cityInput) _masterPanelBound = true;
- }
 }
 
 function updateVendorNavIndicators() {
