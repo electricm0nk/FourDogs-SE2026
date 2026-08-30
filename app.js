@@ -21,6 +21,7 @@ const state = window._state = {
   currentVendor: null,
   order: {}, // key "page|widget" -> qty string
   vendorMeta: {}, // vendorName -> { notes }
+  textFields: {}, // key "page|widget" -> text string
   buyer: { storeName: "", city: "" },
   master: { hiddenVendors: {} }, // vendorName -> bool (true = hidden in sidebar)
   filesHandle: null, // FileSystemFileHandle for iPad Safari auto-save
@@ -64,6 +65,7 @@ function loadOrder() {
     if (parsed.version === SCHEMA_VERSION) {
       state.order = parsed.order || {};
       state.vendorMeta = parsed.vendorMeta || {};
+      state.textFields = parsed.textFields || {};
       state.buyer.storeName = parsed.buyer?.storeName || "";
       state.buyer.city = parsed.buyer?.city || "";
       state.master = parsed.master || { hiddenVendors: {} };
@@ -87,6 +89,7 @@ function persist() {
       version: SCHEMA_VERSION,
       order: state.order,
       vendorMeta: state.vendorMeta,
+      textFields: state.textFields,
       buyer: state.buyer,
       master: state.master,
       savedAt: new Date().toISOString(),
@@ -500,10 +503,11 @@ function setVendorNote(vendor, side, value, source) {
 
 function addVendorNoteOverlays(wrap, pageData, pageW, pageH) {
   const vendor = pageData.vendor || "Other";
+  if (vendor === "Fromm") return;
   const meta = state.vendorMeta[vendor] || {};
   const noteRects = [
-    { side: "left", rect: [12, 18, pageW / 2 - 6, 54] },
-    { side: "right", rect: [pageW / 2 + 6, 18, pageW - 12, 54] },
+    { side: "left", rect: [95, 15, 265, 31] },
+    { side: "right", rect: [405, 15, pageW - 17, 31] },
   ];
   for (const { side, rect } of noteRects) {
     const note = document.createElement("textarea");
@@ -524,14 +528,30 @@ function overlayWidgets(wrap, pageData) {
   const pageH = state.data.page_size[1];
   for (const w of pageData.widgets || []) {
     if (w.kind === "store_name") {
+      const key = pageData.index + "|" + w.name;
       const input = document.createElement("input");
       input.type = "text";
-      input.readOnly = true;
-      input.className = "buyer-overlay";
-      input.value = buyerLine();
-      input.placeholder = "Store name — City / State";
-      input.setAttribute("aria-label", "Store name and city or state");
+      input.inputMode = "text";
+      input.dataset.page = pageData.index;
+      input.dataset.widget = w.name;
       positionOverlay(input, w.rect, pageW, pageH);
+      if (pageData.vendor === "Fromm") {
+        input.className = "fromm-text-overlay";
+        input.value = state.textFields[key] || "";
+        input.placeholder = "Enter text";
+        input.setAttribute("aria-label", "Fromm page " + pageData.index + " text field");
+        input.addEventListener("input", () => {
+          if (input.value) state.textFields[key] = input.value;
+          else delete state.textFields[key];
+          scheduleSave();
+        });
+      } else {
+        input.readOnly = true;
+        input.className = "buyer-overlay";
+        input.value = buyerLine();
+        input.placeholder = "Store name — City / State";
+        input.setAttribute("aria-label", "Store name and city or state");
+      }
       wrap.appendChild(input);
       continue;
     }
@@ -758,6 +778,7 @@ function backupJson() {
     version: SCHEMA_VERSION,
     order: state.order,
     vendorMeta: state.vendorMeta,
+    textFields: state.textFields,
     buyer: state.buyer,
     savedAt: new Date().toISOString(),
   }, null, 2);
@@ -781,7 +802,9 @@ function restoreJson() {
       }
       state.order = parsed.order || {};
       state.vendorMeta = parsed.vendorMeta || {};
-      Object.assign(state.buyer, parsed.buyer || {});
+      state.textFields = parsed.textFields || {};
+      state.buyer.storeName = parsed.buyer?.storeName || "";
+      state.buyer.city = parsed.buyer?.city || "";
       persist();
       // re-render
       $("#main").innerHTML = "";
@@ -800,8 +823,8 @@ function restoreJson() {
 function clearCurrentVendor() {
   if (!state.currentVendor) return;
   showModal(
-    "<h3>Clear all quantities for " + escapeHtml(state.currentVendor) + "?</h3>" +
-    "<p>This removes only the qty inputs on this vendor's pages. Your notes, buyer info, and other vendors are kept.</p>" +
+    "<h3>Clear all entries for " + escapeHtml(state.currentVendor) + "?</h3>" +
+    "<p>This removes qty and text inputs on this vendor's pages. Your notes, buyer info, and other vendors are kept.</p>" +
     '<div class="modal-actions">' +
       '<button class="secondary" id="cm-cancel">Cancel</button>' +
       '<button class="danger" id="cm-ok">Clear</button>' +
@@ -813,6 +836,9 @@ function clearCurrentVendor() {
     for (const p of (map[state.currentVendor] || [])) {
       for (const key of Object.keys(state.order)) {
         if (key.startsWith(p.index + "|")) delete state.order[key];
+      }
+      for (const key of Object.keys(state.textFields)) {
+        if (key.startsWith(p.index + "|")) delete state.textFields[key];
       }
     }
     hideModal();
@@ -880,6 +906,20 @@ async function doExport() {
 
     // Fill qty values
     const allFields = form.getFields();
+
+    // Fill editable Fromm fields using their original PDF field names.
+    for (const [key, value] of Object.entries(state.textFields)) {
+      if (!value) continue;
+      const widgetName = key.slice(key.indexOf("|") + 1);
+      const field = allFields.find((f) => f.getName() === widgetName);
+      if (field && typeof field.setText === "function") {
+        try {
+          field.setText(value);
+        } catch (e) {
+          console.warn("set text failed", widgetName, e);
+        }
+      }
+    }
     let filled = 0;
     for (const [key, qtyStr] of Object.entries(state.order)) {
       const qty = parseInt(qtyStr, 10);
