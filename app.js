@@ -48,6 +48,18 @@ function setSaveState(label, kind = "") {
   if (kind) el.classList.add(kind);
 }
 
+function fileTimestamp(date = new Date()) {
+  const pad = (n) => String(n).padStart(2, "0");
+  return (
+    date.getFullYear() +
+    pad(date.getMonth() + 1) +
+    pad(date.getDate()) +
+    pad(date.getHours()) +
+    pad(date.getMinutes()) +
+    pad(date.getSeconds())
+  );
+}
+
 function showModal(html) {
   $("#modalContent").innerHTML = html;
   $("#modal").classList.add("open");
@@ -862,7 +874,7 @@ function backupJson() {
     buyer: state.buyer,
     savedAt: new Date().toISOString(),
   }, null, 2);
-  downloadBlob(payload, "sepet2026-order-" + Date.now() + ".json", "application/json");
+  downloadBlob(payload, "sepet2026-order-" + fileTimestamp() + ".json", "application/json");
   toast("Backup downloaded");
 }
 
@@ -1073,15 +1085,15 @@ async function doExport() {
 
     const bytes = await pdfDoc.save();
     window._lastPdfBytesLen = bytes.byteLength;
-    window._lastPdfB64 = bytesToBase64(bytes);
-    downloadBlob(bytes, "sepet2026-filled-" + Date.now() + ".pdf", "application/pdf");
+    downloadBlob(bytes, "sepet2026-filled-" + fileTimestamp() + ".pdf", "application/pdf");
     toast("Filled PDF downloaded ✓");
 
     const csv = generateCsv();
     window._lastCsv = csv;
     // Safari on macOS silently drops the first download if two <a download>
     // clicks happen synchronously. Defer the CSV so the PDF click registers.
-    setTimeout(() => downloadBlob(csv, "sepet2026-order-" + Date.now() + ".csv", "text/csv"), 250);
+    const csvStamp = fileTimestamp();
+    setTimeout(() => downloadBlob(csv, "sepet2026-order-" + csvStamp + ".csv", "text/csv"), 250);
   } catch (e) {
     console.error(e);
     showModal(
