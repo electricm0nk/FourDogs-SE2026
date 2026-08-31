@@ -1,4 +1,4 @@
-const CACHE = "sepet2026-v26";
+const CACHE = "sepet2026-v27";
 // Caches HTML, JS, PDF, and data so the app works offline.
 
 const ASSETS = [
@@ -7,7 +7,7 @@ const ASSETS = [
   "app.js",
   "data/data.json",
   "assets/2026-Trade-Show-Book.pdf",
-  "vendor/pdfjs/pdf.min.mjs",
+  "vendor/pdfjs/pdf-umd.min.js",
   "vendor/pdfjs/pdf.worker.min.mjs",
 ];
 

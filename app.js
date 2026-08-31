@@ -1,8 +1,9 @@
 // Southeast Pet 2026 Order Builder
-// Single-file app. Loaded as <script type="module">.
+// Single-file app. Loaded as a classic script after pdfjs (UMD global `pdfjsLib`).
 
-import * as pdfjsLib from "./vendor/pdfjs/pdf.min.mjs";
-pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdfjs/pdf.worker.min.mjs";
+if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdfjs/pdf.worker.min.mjs";
+}
 
 const { PDFDocument, rgb } = window.PDFLib;
 
@@ -820,7 +821,7 @@ function renderMasterTable() {
     tr.innerHTML = '<td colspan="4">All vendors hidden</td>';
     tbody.appendChild(tr);
   }
-
+}
 
 
 function renderItemsTable() {
