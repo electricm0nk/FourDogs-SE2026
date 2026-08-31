@@ -1,8 +1,8 @@
 // Southeast Pet 2026 Order Builder
 // Single-file app. Loaded as <script type="module">.
 
-import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs";
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs";
+import * as pdfjsLib from "./vendor/pdfjs/pdf.min.mjs";
+pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdfjs/pdf.worker.min.mjs";
 
 const { PDFDocument, rgb } = window.PDFLib;
 
