@@ -2,7 +2,7 @@
 // Single-file app. Loaded as a classic script after pdfjs (UMD global `pdfjsLib`).
 
 if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdfjs/pdf.worker.min.mjs";
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdfjs/pdf.worker.min.js";
 }
 
 const { PDFDocument, rgb } = window.PDFLib;
