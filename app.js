@@ -24,7 +24,7 @@ const state = window._state = {
   textFields: {}, // key "page|widget" -> text string
   checkboxFields: {}, // key "page|widget" -> checked
   buyer: { storeName: "", city: "" },
-  master: { hiddenVendors: {} }, // vendorName -> bool (true = hidden in sidebar)
+  master: { hiddenVendors: {}, showAll: true }, // showAll: true = show all vendors; false = hide hidden ones in master
   filesHandle: null, // FileSystemFileHandle for iPad Safari auto-save
   filesHandleName: null,
 };
@@ -123,8 +123,10 @@ function loadOrder() {
       state.checkboxFields = parsed.checkboxFields || {};
       state.buyer.storeName = parsed.buyer?.storeName || "";
       state.buyer.city = parsed.buyer?.city || "";
-      state.master = parsed.master || { hiddenVendors: {} };
+      state.master = parsed.master || { hiddenVendors: {}, showAll: true };
       if (!state.master.hiddenVendors) state.master.hiddenVendors = {};
+      if (typeof state.master.showAll !== "boolean") state.master.showAll = true;
+
     }
   } catch (e) {
     console.warn("failed to load order:", e);
@@ -380,8 +382,23 @@ function selectMaster() {
   const tpl = $("#masterPanelTemplate");
   const node = tpl.content.firstElementChild.cloneNode(true);
   main.appendChild(node);
+  const toggle = node.querySelector("#m-show-all");
+  const syncToggle = () => {
+    const showAll = state.master.showAll !== false;
+    toggle.dataset.pressed = String(showAll);
+    toggle.setAttribute("aria-checked", String(showAll));
+    toggle.textContent = showAll ? "All" : "Visible only";
+  };
+  syncToggle();
+  toggle.addEventListener("click", () => {
+    state.master.showAll = !(state.master.showAll !== false);
+    scheduleSave();
+    syncToggle();
+    renderMasterTable();
+  });
   node.querySelector("#masterInstructions").addEventListener("click", showInstructions);
   renderToolbarIntoMain();
+  recomputeTotals();
   $("#main").scrollTop = 0;
 }
 
@@ -683,9 +700,13 @@ function overlayWidgets(wrap, pageData) {
 
 // === Totals ===
 function computeSubtotal() {
-  let total = 0;
+  return computeSubtotals().net;
+}
+
+function computeSubtotals() {
+  let list = 0;
+  let net = 0;
   for (const [key, qtyStr] of Object.entries(state.order)) {
-    if (!qtyStr) continue;
     const qty = parseInt(qtyStr, 10);
     if (!qty || qty <= 0) continue;
     const parts = key.split("|");
@@ -695,16 +716,15 @@ function computeSubtotal() {
     if (!page) continue;
     const w = page.widgets.find((ww) => ww.name === widgetName);
     if (!w || !w.row || w.row.net_price == null) continue;
-    total += qty * w.row.net_price;
+    net += qty * w.row.net_price;
+    if (w.row.list_price != null) list += qty * w.row.list_price;
   }
-  return total;
+  return { list, net };
 }
 
 function computeVendorSubtotals() {
-  // Returns { vendorName: subtotal } for each vendor that has any qty inputs.
   const result = {};
   for (const [key, qtyStr] of Object.entries(state.order)) {
-    if (!qtyStr) continue;
     const qty = parseInt(qtyStr, 10);
     if (!qty || qty <= 0) continue;
     const parts = key.split("|");
@@ -715,25 +735,29 @@ function computeVendorSubtotals() {
     const w = page.widgets.find((ww) => ww.name === widgetName);
     if (!w || !w.row || w.row.net_price == null) continue;
     const vendor = page.vendor || "Other";
-    result[vendor] = (result[vendor] || 0) + qty * w.row.net_price;
+    if (!result[vendor]) result[vendor] = { list: 0, net: 0 };
+    result[vendor].net += qty * w.row.net_price;
+    if (w.row.list_price != null) result[vendor].list += qty * w.row.list_price;
   }
   return result;
 }
 
 function recomputeTotals() {
-
-  const subtotal = computeSubtotal();
+  const totals = computeSubtotals();
   const amt = $("#subtotalAmt");
   const warn = $("#minWarn");
   const hdr = $("#headerTotal");
-  if (hdr) hdr.textContent = "TOTAL ORDER: $" + subtotal.toFixed(2);
-  if (amt) amt.textContent = "$" + subtotal.toFixed(2);
-  const belowMin = subtotal > 0 && subtotal < ORDER_MIN;
+  const hdrList = $("#headerList");
+  if (hdr) hdr.textContent = "Net: $" + totals.net.toFixed(2);
+  if (hdrList) hdrList.textContent = "List: $" + totals.list.toFixed(2);
+  if (amt) amt.textContent = "$" + totals.net.toFixed(2);
+  const belowMin = totals.net > 0 && totals.net < ORDER_MIN;
   if (amt) amt.classList.toggle("below-min", belowMin);
   if (warn) warn.style.display = belowMin ? "" : "none";
   renderMasterTable();
   renderItemsTable();
 }
+
 function renderMasterTable() {
   const tbody = $("#m-table-body");
   if (!tbody) return;
@@ -745,26 +769,37 @@ function renderMasterTable() {
     return a.localeCompare(b);
   });
   const subtotals = computeVendorSubtotals();
-  let total = 0;
+  const showAll = state.master.showAll !== false;
+  let listTotal = 0;
+  let netTotal = 0;
   let visibleCount = 0;
   for (const v of vendors) {
-    const subtotal = subtotals[v] || 0;
-    total += subtotal;
+    const sub = subtotals[v] || { list: 0, net: 0 };
     const isHidden = !!state.master.hiddenVendors[v];
+    if (!showAll && isHidden) continue;
+    listTotal += sub.list;
+    netTotal += sub.net;
     if (!isHidden) visibleCount++;
     const tr = document.createElement("tr");
     if (isHidden) tr.style.opacity = "0.45";
     tr.innerHTML =
       '<td>' + escapeHtml(v) + '</td>' +
-      '<td class="mp-num">$' + subtotal.toFixed(2) + '</td>' +
-      '<td style="text-align:center"><input type="checkbox" data-vendor="' + v.replace(/'/g, '&apos;') + '"' + (isHidden ? ' checked' : '') + '></td>';
+      '<td class="mp-num">$' + sub.list.toFixed(2) + '</td>' +
+      '<td class="mp-num">$' + sub.net.toFixed(2) + '</td>' +
+      '<td class="mp-hide-col"><input type="checkbox" data-vendor="' + v.replace(/'/g, '&apos;') + '"' + (isHidden ? ' checked' : '') + '></td>';
     tbody.appendChild(tr);
   }
-  // Footer row with grand total
+  // Footer row with grand totals (always reflects all vendors, not the filtered view)
+  const grandList = Object.values(subtotals).reduce((sum, s) => sum + (s?.list || 0), 0);
+  const grandNet = Object.values(subtotals).reduce((sum, s) => sum + (s?.net || 0), 0);
   const footer = document.createElement("tr");
-  footer.innerHTML = '<td><strong>TOTAL</strong></td><td class="mp-num"><strong>$' + total.toFixed(2) + '</strong></td><td></td>';
+  footer.innerHTML =
+    '<td><strong>TOTAL</strong></td>' +
+    '<td class="mp-num"><strong>$' + grandList.toFixed(2) + '</strong></td>' +
+    '<td class="mp-num"><strong>$' + grandNet.toFixed(2) + '</strong></td>' +
+    '<td class="mp-hide-col"></td>';
   tbody.appendChild(footer);
-  // Event delegation for hide checkboxes (avoid stacking listeners on re-render)
+  // Event delegation for hide checkboxes
   if (!tbody.dataset.boundHide) {
     tbody.addEventListener("change", (e) => {
       const t = e.target;
@@ -779,13 +814,14 @@ function renderMasterTable() {
     });
     tbody.dataset.boundHide = "1";
   }
-  if (visibleCount === 0) {
+  if (!showAll && visibleCount === 0) {
     const tr = document.createElement("tr");
     tr.className = "mp-empty";
-    tr.innerHTML = '<td colspan="3">All vendors hidden</td>';
+    tr.innerHTML = '<td colspan="4">All vendors hidden</td>';
     tbody.appendChild(tr);
   }
-}
+
+
 
 function renderItemsTable() {
   const tbody = $("#m-items-body");
@@ -898,8 +934,9 @@ function restoreJson() {
       state.checkboxFields = parsed.checkboxFields || {};
       state.buyer.storeName = parsed.buyer?.storeName || "";
       state.buyer.city = parsed.buyer?.city || "";
-      state.master = parsed.master || { hiddenVendors: {} };
+      state.master = parsed.master || { hiddenVendors: {}, showAll: true };
       if (!state.master.hiddenVendors) state.master.hiddenVendors = {};
+      if (typeof state.master.showAll !== "boolean") state.master.showAll = true;
       persist();
       buildVendorList();
       if (state.currentVendor) {

@@ -85,7 +85,8 @@
     z-index: 100;
   }
   header h1 { font-size: 17px; font-weight: 600; margin: 0; flex: 1; min-width: 0; }
-  .header-total { font-size: 16px; font-weight: 700; color: var(--text); margin-left: 18px; padding: 6px 12px; background: var(--accent-soft); border-radius: 8px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .header-total { font-size: 16px; font-weight: 700; color: var(--text); margin-left: 10px; padding: 6px 12px; background: var(--accent-soft); border-radius: 8px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .header-total#headerList { background: rgba(0, 0, 0, 0.04); }
   .save-state { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
 
   .theme-switch {
@@ -191,6 +192,13 @@
   #masterPanel.master-page .mp-items-title { font-size: 14px; margin-top: 20px; }
   #masterPanel.master-page .mp-table { font-size: 14px; }
   #masterPanel.master-page .mp-items-table { font-size: 14px; }
+
+  #masterPanel .mp-toggle { display: flex; align-items: center; gap: 10px; margin: 12px 0 6px; }
+  #masterPanel .mp-toggle-label { font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--muted); letter-spacing: 0.3px; }
+  #masterPanel .mp-toggle-switch { background: var(--accent); color: #fff; border: 0; padding: 6px 14px; border-radius: 16px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+  #masterPanel .mp-toggle-switch[data-pressed="false"] { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+  #masterPanel .mp-table th.mp-hide-col { text-align: center; }
+  #masterPanel .mp-table td.mp-hide-col { text-align: center; }
 
   #masterPanel.master-page { background: var(--panel); }
   #masterInstructions.instructions-link {
@@ -507,7 +515,8 @@
 <header>
   <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle vendor list">☰</button>
   <h1>SE Pet 2026 Order</h1>
-  <span class="header-total" id="headerTotal">TOTAL ORDER: $0.00</span>
+  <span class="header-total" id="headerList">List: $0.00</span>
+  <span class="header-total header-net" id="headerTotal">Net: $0.00</span>
   <div class="theme-switch" id="themeSwitch" role="group" aria-label="Display theme">
     <button type="button" data-theme="light" aria-pressed="true">Light</button>
     <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
@@ -525,10 +534,15 @@
   <section id="masterPanel" class="master-page">
     <h2 class="mp-vendor-title">Master Order Summary</h2>
     <div><button type="button" class="instructions-link" id="masterInstructions">How to use this app</button></div>
+    <div class="mp-toggle">
+      <label class="mp-toggle-label" for="m-show-all">Show all vendors</label>
+      <button type="button" class="mp-toggle-switch" id="m-show-all" role="switch" aria-checked="true" data-pressed="true">All / Visible</button>
+    </div>
     <table class="mp-table">
-      <thead><tr><th>Vendor</th><th class="mp-num">Subtotal</th><th title="Hide from sidebar">Hide</th></tr></thead>
+      <thead><tr><th>Vendor</th><th class="mp-num">List Subtotal</th><th class="mp-num">Net Subtotal</th><th class="mp-hide-col" title="Hide from sidebar">Hide</th></tr></thead>
       <tbody id="m-table-body"></tbody>
     </table>
+
     <h3 class="mp-items-title">Order Items</h3>
     <table class="mp-items-table">
       <thead><tr><th>UPC</th><th>Description</th><th class="mp-num">Qty</th><th>×</th></tr></thead>
@@ -536,6 +550,7 @@
     </table>
   </section>
 </template>
+
 </div>
 
 <div class="toast" id="toast"></div>
