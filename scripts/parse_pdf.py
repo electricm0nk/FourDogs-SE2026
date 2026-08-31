@@ -58,11 +58,11 @@ NON_VENDOR_HEADINGS = {
 
 # Column x-ranges (PDF letter, 612pt wide):
 COL_UPC = (0, 60)
-COL_DESC = (60, 430)
-COL_UM = (430, 460)
-COL_LIST = (460, 500)
-COL_PCT = (500, 535)
-COL_NET = (535, 570)
+COL_DESC = (60, 400)
+COL_UM = (400, 500)
+COL_LIST = (430, 525)
+COL_PCT = (460, 540)
+COL_NET = (490, 600)
 
 # Tokens that mark a user-input qty column (header text on the page)
 QTY_HEADER_TOKENS = {
@@ -91,9 +91,9 @@ PAGE_VENDOR_OVERRIDES = {
     43: "Big Country Raw",
     **dict.fromkeys(range(44, 47), "Bocce’s Bakery"),
     47: "Bones & Co",
-    49: "Bones & Co",
     53: "Brightkins",
     **dict.fromkeys((59, 60), "Carna4"),
+    49: "BoxieCat",
     70: "Dave’s",
     83: "Earth Animal",
     85: "Earthbath",
@@ -138,12 +138,38 @@ def detect_vendor_from_content(page_text: str) -> str | None:
 
     Some vendor pages use generic form codes (e.g. F3856SP) as titles but
     are actually Fromm forms. We detect those via content text.
+
+    For pages where the header heuristic returns None (because the title
+    is "SHOW" + a section name), we also check the footer for the
+    Southeast Pet 2026 Trade Show line that contains the vendor name.
     """
     if not page_text:
         return None
     tl = page_text.lower()
     if "fromm family foods" in tl or "fromm.com" in tl or "pick six" in tl:
         return "Fromm"
+    # Many pages end with a footer like "VendorName\nSoutheast Pet 2026 Trade Show".
+    # When the header is generic ("SHOW" / "UPC" / a section title), fall back
+    # to the footer vendor line.
+    footer_re = re.compile(r"^([A-Za-z0-9][A-Za-z0-9 &+'’\.\-]{1,40})\s*\n\s*Southeast Pet 2026 Trade Show\s*$", re.MULTILINE)
+    for line in page_text.splitlines():
+        line = line.strip()
+        if not line or "southeast pet 2026 trade show" in line.lower():
+            continue
+        if line.lower() in {"southeast pet 2026 trade show"}:
+            continue
+    # Look at the last few non-empty lines: the vendor name is typically
+    # one line above the Trade Show footer.
+    lines = [l.strip() for l in page_text.splitlines() if l.strip()]
+    for i in range(len(lines) - 1, -1, -1):
+        if "southeast pet 2026 trade show" in lines[i].lower():
+            if i > 0 and lines[i - 1] and lines[i - 1].lower() not in {"show", "u", "u pc", "upc", "u p c", "show:", "description", "um", "list", "%off", "net", "qty", "buy", "get", "blank"}:
+                candidate = lines[i - 1].rstrip(":")
+                if 2 <= len(candidate) <= 40 and 1 <= len(candidate.split()) <= 5:
+                    if candidate.lower() in NON_VENDOR_HEADINGS:
+                        return None
+                    return candidate
+            break
     return None
 
 
@@ -284,10 +310,13 @@ def classify_widget(raw_name, rect, page_columns):
 
 def parse_row(row_spans):
     upc = None
+    upc_re = re.compile(r"^(\d{12,14})")
     for x, t in row_spans:
-        if COL_UPC[0] <= x < COL_UPC[1] and re.fullmatch(r"\d{12}", t):
-            upc = t
-            break
+        if COL_UPC[0] <= x < COL_UPC[1]:
+            m = upc_re.match(t)
+            if m:
+                upc = m.group(1)
+                break
     descs = []
     for x, t in row_spans:
         if COL_DESC[0] <= x < COL_DESC[1] and not re.fullmatch(r"[\d.]+", t) and t not in {"_____"}:
@@ -387,7 +416,9 @@ def main():
                         if best is None or abs(ry - widget_y) < abs(best[0] - widget_y):
                             best = (ry, rd)
                 if best is not None and best[1]["net_price"] is not None:
-                    if net_price is None or abs(best[1]["net_price"] - net_price) < 0.01:
+                    # Trust the row's net_price if the widget's own price
+                    # is missing or appears to be a legacy cents-coded value (< 1.0).
+                    if net_price is None or net_price < 1.0 or abs(best[1]["net_price"] - net_price) < 0.01:
                         row_match = best[1]
                         matched_qty += 1
                     else:
