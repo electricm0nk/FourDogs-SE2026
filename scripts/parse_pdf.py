@@ -106,7 +106,7 @@ PAGE_VENDOR_OVERRIDES = {
     179: "Hugglehounds",
     189: "Huxley & Kent",
     190: "Icelandic+",
-    194: "Icelandic+",
+    194: "Inaba",
     195: "Inaba",
     198: "Inaba",
     200: "IndiPets",
