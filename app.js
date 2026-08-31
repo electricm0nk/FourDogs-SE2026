@@ -1058,8 +1058,11 @@ async function doExport() {
       if (!page) continue;
       const left = meta.noteLeft || "";
       const right = meta.noteRight || "";
-      if (left) page.drawText(left, { x: 132, y: pageHeight - 30, size: 8, color: rgb(0, 0, 0) });
-      if (right) page.drawText(right, { x: 462, y: pageHeight - 30, size: 8, color: rgb(0, 0, 0) });
+      if (!left && !right) continue;
+      const noteFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+      page.setFont(noteFont);
+      page.setFontSize(8);
+      if (right) page.drawText(right, { x: 462, y: pageHeight - 30, color: rgb(0, 0, 0) });
     }
 
 
@@ -1076,7 +1079,9 @@ async function doExport() {
 
     const csv = generateCsv();
     window._lastCsv = csv;
-    downloadBlob(csv, "sepet2026-order-" + Date.now() + ".csv", "text/csv");
+    // Safari on macOS silently drops the first download if two <a download>
+    // clicks happen synchronously. Defer the CSV so the PDF click registers.
+    setTimeout(() => downloadBlob(csv, "sepet2026-order-" + Date.now() + ".csv", "text/csv"), 250);
   } catch (e) {
     console.error(e);
     showModal(
