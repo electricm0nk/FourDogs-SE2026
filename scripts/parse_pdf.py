@@ -354,6 +354,90 @@ def parse_row(row_spans):
     }
 
 
+def detect_bundle_widgets(page, page_widgets, page_index):
+    """Find bundle display sections on a page: a `____` placeholder next to a
+    `TOTAL $X.XX` line. Returns a list of synthetic widget records to add
+    so the user can enter a qty to order the bundle display.
+
+    Only returns bundles on pages with very few form widgets (the bundle
+    display items are visual-only, with no per-row qty inputs).
+    """
+    if not page_widgets or len(page_widgets) > 3:
+        return []
+    text_dict = page.get_text("dict")
+    bundles = []
+    # First pass: collect all TOTAL $X.XX positions in the body
+    totals = []
+    for block in text_dict["blocks"]:
+        for line in block.get("lines", []):
+            for span in line.get("spans", []):
+                text = span["text"].strip()
+                import re as _re
+                m = _re.match(r"TOTAL\s+\$([0-9,]+\.\d{2})", text)
+                if m and 400 < span["bbox"][0] < 600 and span["bbox"][1] < 700:
+                    totals.append({
+                        "amount": float(m.group(1).replace(",", "")),
+                        "y": span["bbox"][1],
+                        "x": span["bbox"][0],
+                    })
+    # Second pass: for each TOTAL find a 5+ underscore placeholder at the same y
+    used_ys = []
+    for i, t in enumerate(totals):
+        best = None
+        best_dist = 99
+        for block in text_dict["blocks"]:
+            for line in block.get("lines", []):
+                for span in line.get("spans", []):
+                    txt = span["text"].strip()
+                    if txt.startswith("____") and len(txt) >= 5 and span["bbox"][0] > 500:
+                        y_dist = abs(span["bbox"][1] - t["y"])
+                        if y_dist < 5 and y_dist < best_dist:
+                            best = {
+                                "rect": [
+                                    span["bbox"][0],
+                                    span["bbox"][1],
+                                    span["bbox"][2],
+                                    span["bbox"][3],
+                                ],
+                                "y_dist": y_dist,
+                            }
+                            best_dist = y_dist
+        if best is not None:
+            used_ys.append(round(best["rect"][1], 0))
+            bundle_name = f"BUNDLE_{page_index}_{i + 1}"
+            bundles.append({
+                "name": bundle_name,
+                "field_type": "Text",
+                "rect": best["rect"],
+                "net_price": t["amount"],
+                "list_price": t["amount"],
+                "description": f"Bundle display \u2014 see page {page_index}",
+            })
+    # Filter out bundles that overlap with non-total, non-store-name form fields.
+    # The TOTAL widgets and STORE NAME field are display-only and shouldn't block
+    # synthetic bundle inputs.
+    skip_widgets = [
+        w for w in page_widgets
+        if w.field_name.startswith("TOTAL")
+        or "STORE NAME" in w.field_name.upper()
+        or "CITYSTATE" in w.field_name.upper()
+    ]
+    blocking = [w for w in page_widgets if w not in skip_widgets]
+    real = []
+    for b in bundles:
+        bx0, by0, bx1, by1 = b["rect"]
+        overlap = False
+        for w in blocking:
+            wx0, wy0, wx1, wy1 = w.rect
+            if not (bx1 < wx0 or bx0 > wx1 or by1 < wy0 or by0 > wy1):
+                overlap = True
+                break
+        if not overlap:
+            real.append(b)
+    return real
+
+
+
 def main():
     doc = pymupdf.open(PDF_PATH)
     pages_out = []
@@ -397,6 +481,7 @@ def main():
             list(page.widgets() or []),
             key=lambda w: (round(w.rect[1], 1), round(w.rect[0], 1)),
         )
+        bundle_widgets = detect_bundle_widgets(page, widgets_sorted, pno + 1)
 
         widget_records = []
         for w in widgets_sorted:
@@ -435,6 +520,25 @@ def main():
                 "occurrence": occ,
                 "rect": [round(x, 2) for x in w.rect],
                 "row": row_match,
+            })
+        # Append synthetic bundle widgets so the user can order a bundle display.
+        for bw in bundle_widgets:
+            widget_records.append({
+                "name": bw["name"],
+                "kind": "qty",
+                "field_type": bw["field_type"],
+                "upc": None,
+                "net_price": bw["net_price"],
+                "occurrence": 0,
+                "rect": [round(x, 2) for x in bw["rect"]],
+                "row": {
+                    "upc": None,
+                    "description": bw["description"],
+                    "um": None,
+                    "list_price": bw["list_price"],
+                    "discount_pct": None,
+                    "net_price": bw["net_price"],
+                },
             })
 
         pages_out.append({
